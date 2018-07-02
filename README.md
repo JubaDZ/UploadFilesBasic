@@ -1,5 +1,5 @@
-# Script Upload Files Basic v 0.9.2
-Last update 29/6/2018
+# Script Upload Files Basic v 0.9.3
+Last update 2/7/2018
 
 ### Features ###
 
