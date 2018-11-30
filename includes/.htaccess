@@ -1,0 +1,8 @@
+<files config.php>
+order allow,deny
+deny from all
+</files>
+<files connect.php>
+order allow,deny
+deny from all
+</files>
