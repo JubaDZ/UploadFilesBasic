@@ -235,6 +235,7 @@ $orgfilename     = protect($Upload->getFileName());
 $passwordfile    = (isPost('passwordfile')) ? protect($_POST['passwordfile']) : '';
 $code            = (isPost('code')) ? protect($_POST['code']) : '' ;
 $ispublic        = (isPost('ispublic') && (IsLogin||ApiLogin) ) ? (int)$_POST['ispublic'] : 1 ;
+$FolderUploadId  = FolderUploadId;
 
 (defined('HashCode') && HashCode !== $code && !isGet('api') ) ? IePrintArray(array('success' => false, 'msg' => $lang[103].' / HashCode' ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) : '' ;  
 ((IsLogin) && (UserSpaceLeft<=0))   ? IePrintArray(array('success' => false, 'msg' => $lang[173].' / '.$lang[117] ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) : '' ;  
@@ -283,7 +284,7 @@ if (!$result)
 	
 	} 
 	 
-     Sql_File_Insert($Upload->getFileName(),$filesize,$RandomString,$passwordfile,$orgfilename,$ispublic,FolderUploadId);
+     Sql_File_Insert($Upload->getFileName(),$filesize,$RandomString,$passwordfile,$orgfilename,$ispublic,$FolderUploadId);
 	 
 	 $id  = Sql_Last_query_id(); 
 	 

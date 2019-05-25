@@ -408,7 +408,7 @@ else
 define('UserSpaceUsed',(int)Get_user_space_used(UserID)); 
 		
 			
-if(defined('enable_userfolder') && defined('ApiLogin') && enable_userfolder && ApiLogin)
+if(defined('enable_userfolder') && (defined('ApiLogin') ) && enable_userfolder && (ApiLogin))
 	define('uploadDir', FolderUploadName );
 elseif(defined('folderupload'))
     define('uploadDir', folderupload);
@@ -1817,6 +1817,7 @@ function translate()
 global $lang;
 return array('free'=>$lang[226],'premium'=>$lang[227],'gold'=>$lang[228],'register'=>$lang[55],'deletelink'=>$lang[26],'maxUploads'=>$lang[237],'days_older'=>$lang[236],'maxsize'=>$lang[24],'extensions'=>$lang[25],'Interval'=>$lang[78],'directdownload'=>$lang[51],'statistics'=>$lang[28],'userspacemax'=>$lang[173],'thumbnail'=>$lang[172],'display_ads'=>$lang[183],'price'=>$lang[231],'enable_userfolder'=>$lang[65],'speed'=>$lang[234],'multiple'=>$lang[248]);
 }
+
 function LoadUserSettings()
 {
 global $_plans;
@@ -1857,12 +1858,20 @@ while($row = mysqli_fetch_assoc($result))
 //echo $row['name']  .' = <code>'. $row['value'].'</code><br>';
 }
 	
-		
+
 /*---------------------------------*/				
 if(defined('enable_userfolder') && defined('IsLogin') && !defined('uploadDir') && !isGet('api') && enable_userfolder && IsLogin)
+{
+	define('FolderUploadId', (int)Get_folderId_By_UserId(UserID));
+	define('FolderUploadName', Get_folderName_By_UserId(UserID));
 	define('uploadDir', FolderUploadName );
+}
 elseif(defined('folderupload') && !defined('uploadDir') && !isGet('api') )
+{
+	define('FolderUploadId', (int)Get_folderId_By_UserId(0));
+	define('FolderUploadName',  folderupload);
     define('uploadDir', folderupload);
+}
 /*---------------------------------*/	
 (!defined('theme')) ? define('theme', 'bootstrap.min.css') : '';
 /*---------------------------------*/

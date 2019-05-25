@@ -40,7 +40,7 @@ days_older_parameter
  
 (!isset($_SESSION['settings']['HashCode'])) ? $_SESSION['settings']['HashCode'] = GenerateRandomString(30) : '' ;
 
-(!defined('FolderUploadId')) ? define('FolderUploadId',$_SESSION['settings']['default_folder_id']) : '';
+//(!defined('FolderUploadId')) ? define('FolderUploadId',$_SESSION['settings']['default_folder_id']) : '';
 (!defined('HashCode'))       ? define('HashCode',$_SESSION['settings']['HashCode']) : '';
 (!defined('display_ads'))    ? define('display_ads',true) : '';
 
