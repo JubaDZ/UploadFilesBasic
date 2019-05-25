@@ -485,7 +485,7 @@ elseif(num_rows($sql)>0) {
 		$_SESSION['login']['user_space_left'] = user_space_max-(int)$_SESSION['login']['user_space_used'];
 		
 		(session_status() == PHP_SESSION_ACTIVE) ? session_regenerate_id() : '';
-
+/*
 		if(enable_userfolder)
 		{
 			$_SESSION['login']['folder_id'] = (int)Get_folderId_By_UserId($row['id']);
@@ -496,7 +496,7 @@ elseif(num_rows($sql)>0) {
 			$_SESSION['login']['folder_id'] = (int)Get_folderId_By_UserId(0);
 			$_SESSION['login']['folder_name'] = folderupload;
 		}
-		
+		*/
 		Sql_query("UPDATE `users` SET `last_visit` = '".timestamp()."', `last_ip` ='".iplong()."' WHERE `id` ='".$row['id']."';");	
 		if($_SESSION['login']['user_level']==1)
 		$data['admin_msg']      = $_SESSION['login']['user_level'];

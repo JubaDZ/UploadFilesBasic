@@ -1298,8 +1298,9 @@ $folderExists = num_rows(Sql_query("SELECT 1 FROM `folders` WHERE `folderName` =
 		if($folderExists==0)
 		{
 			Sql_query("INSERT INTO `folders` (`userId`, `folderName`, `isPublic`, `accessPassword`, `date_added`) VALUES ( '$userId', '$uploadDir', '1', '', '".timestamp()."');");
+			/*
 			$_SESSION['login']['folder_id'] = (int)Sql_Last_query_id() ;
-			$_SESSION['login']['folder_name'] = $uploadDir;
+			$_SESSION['login']['folder_name'] = $uploadDir;*/
 		}
 /*			
 if (isset($uploadDir))
