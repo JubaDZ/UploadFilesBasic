@@ -551,6 +551,7 @@ else { /*strtotime(date('Y-m-d H:i:s')*/
 	$_SESSION['login']['last_ip']    = $ip;
 	$_SESSION['login']['user_space_used'] = 0 ;
 	$_SESSION['login']['user_space_left'] = user_space_max;
+	/*
 	if(enable_userfolder)
 	{
 		$_SESSION['login']['folder_id'] = (int) Get_folderId_By_UserId($insert_id);
@@ -561,7 +562,7 @@ else { /*strtotime(date('Y-m-d H:i:s')*/
 		$_SESSION['login']['folder_id'] = (int)Get_folderId_By_UserId(0);
 		$_SESSION['login']['folder_name'] = folderupload;
 	}
-	
+	*/
 	if(enable_userfolder)
 		if (!file_exists('..'.$insert_dir)) 
 			@mkdir('..'.$insert_dir, 0777, true);
