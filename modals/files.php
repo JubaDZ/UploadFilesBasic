@@ -2,6 +2,8 @@
 <?php 
 $userId      = (isGet('user')) ? (int)$_GET['user'] : UserID ;
 $user_exists = (Sql_user_exists($userId)) ? true : false;
+$showfiles   = (Sql_user_showfiles($userId)) ? true : false;
+
 $currentpage = (isGet('currentpage') && is_numeric($_GET['currentpage'])) ? (int) $_GET['currentpage'] : 1;
 $totalpages  = ($user_exists) ? ceil(Sql_Get_Files_user_Count($userId) / rowsperpage) : 0;
 $totalpages  = ($totalpages < 1) ? 1 : $totalpages; 
@@ -11,6 +13,8 @@ $totalpages  = ($totalpages < 1) ? 1 : $totalpages;
 <div class="form-group">
 <?php if( $user_exists ) {?>
 <?php if(IsLogin || isGet('user')) {?>
+<?php if($showfiles && isGet('user')) {?>
+
 <form id="delete_files_form" role="form" onsubmit="return false;">  
 <div class="table-responsive <?php echo ClassAnimated ?> swing">
  <table class="table" id="tablefiles">
@@ -38,7 +42,7 @@ $totalpages  = ($totalpages < 1) ? 1 : $totalpages;
 </form>
 
     <div id="page-selection" class="text-center"></div>
-
+<?php } else Not_Allowed_to_Access() ?> 
 <?php } else Need_Login() ?> 
 <?php } else User_Not_Exists() ?> 	
 </div>

@@ -259,6 +259,9 @@ if(num_rows(Sql_query("SHOW COLUMNS FROM `users` LIKE 'last_ip';"))==0)
 if(num_rows(Sql_query("SHOW COLUMNS FROM `users` LIKE 'end_plan';"))==0) 
 	Sql_query("ALTER TABLE `users` ADD `end_plan` INT NOT NULL ;");
 
+if(num_rows(Sql_query("SHOW COLUMNS FROM `users` LIKE 'showfiles';"))==0) 
+	Sql_query("ALTER TABLE `users` ADD `showfiles` INT NOT NULL ;");
+
 Sql_query("UPDATE `files` SET `last_access` = '$date'");
 
 

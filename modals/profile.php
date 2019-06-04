@@ -65,6 +65,16 @@ $country  = GetCountryName(protect($InfoByIp['countryCode']));
     <input type="text" name ="email" class="form-control" maxlength="40" placeholder="<?php echo $lang[40]?>" value="<?php echo defined('UserEmail') ? UserEmail : ''  ?>" required>
   </div>
   
+   <div class="form-group">
+    <label for="showfiles"><?php echo $lang[294] ?> </label>
+	
+  
+  	<div class="input-group">
+        <input type="text"  class="form-control" placeholder="<?php echo $lang[258].$lang[294]  ?>" disabled>
+		<span class="input-group-addon" style="min-width: 15px;text-align: left;"><input name="showfiles" class="checkbox" type="checkbox" <?php if(Sql_user_showfiles(UserID)) echo ' checked' ?>></span>
+    </div>
+    </div>
+ 
  
  <?php if(EnableCaptcha){?>
    <div class="form-group">

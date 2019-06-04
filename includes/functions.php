@@ -1625,6 +1625,13 @@ $user_id = (int)$user_id;
 return num_rows(Sql_query("SELECT 1 FROM `users` WHERE  `id`= '$user_id'"));                		 
 }
 
+function Sql_user_showfiles($user_id)
+{
+$user_id = (int)$user_id;
+return fetch_assoc(Sql_query("SELECT `showfiles` FROM `users` WHERE `id`= ".$user_id),'showfiles');                		 
+}
+
+
 function Sql_Get_Reports_Count($file_id=0)
 {
 $file_id = (int)$file_id;
@@ -1844,6 +1851,7 @@ while($row = mysqli_fetch_assoc($result))
 	 $planStr = $_plans[PlanId] ;
 	(!defined($row['name']) && (trim($row[$planStr]) !=='')) ? define($row['name'], $row[$planStr]) : ''; 
 }
+//define('showUserfiles', fetch_assoc(Sql_query("SELECT `showfiles` FROM `users` WHERE `id`= ".UserID),'showfiles')) ;
 @mysqli_free_result($result);
 }
 

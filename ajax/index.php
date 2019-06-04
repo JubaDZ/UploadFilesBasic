@@ -855,7 +855,7 @@ PrintArray(array('success_msg' => $lang[104]),data_format);
 
 if(isGet('edituser')){
 	
-
+$showfiles= isPost('showfiles') ?  1 : 0 ;
 $password = protect($_POST['password']);
 $md5pass  = md5($password);
 $email    = protect($_POST['email']);
@@ -869,7 +869,7 @@ elseif(num_rows($check_email)>0) { $data['error_msg'] = error($lang[97]); }
 elseif(!isValidEmail($email)) { $data['error_msg'] = error($lang[93]); }
 elseif(isset($_SESSION['login'])) //['status']
 {
-Sql_query("UPDATE `users` SET `password` = '$md5pass' , `email` = '$email' WHERE `id` ='$id';");
+Sql_query("UPDATE `users` SET `password` = '$md5pass' , `email` = '$email' , `showfiles` = '$showfiles' WHERE `id` ='$id';");
 $data['success_msg'] = success($lang[178]);
 unset($_SESSION['login']);		
 } else $data['error_msg'] = error($lang[179]);	
