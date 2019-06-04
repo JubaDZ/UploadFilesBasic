@@ -36,8 +36,10 @@
           <div id="collapseFour" class="panel-collapse collapse <?php if( isGet('register') ||  isGet('forgot') || (isGet('files') && !isGet('user')) || isGet('login') || isGet('profile') || isGet('authorized') ) echo ' in';?>">
             <div class="list-group">
 			  
-			   <?php if(IsLogin && !isGet('user')) {?>
+			   <?php if(IsLogin) {?>
+			   <?php if(!isGet('user')) {?>
 			   <a class="list-group-item <?php actv2('files')?>" href="?files" ><i class="glyphicon glyphicon-hdd"></i> <?php echo $lang[50]?></a>
+			   <?php }?>
 			   <a class="list-group-item<?php actv2('profile')?>" href="?profile" ><i class="glyphicon glyphicon-user"></i> <?php echo $lang[30]?></a>
 			   <?php  if(IsAdmin) {?>
 			   <a class="list-group-item" href="./admin"><code><i class="glyphicon glyphicon-tasks"></i></code> <?php echo $lang[75] ?></a>
