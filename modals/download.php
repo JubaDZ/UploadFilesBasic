@@ -48,10 +48,13 @@ elseif (!$info["isfile"])
 
 else
 	{
+		
+	$_username_html =	showUserfiles && ((int)$info['user_id']<>0) ? '<a href="javascript:void(0)" onclick="pageUserFiles('.$info['user_id'].')">'.$info["username"].'</a>': $info["username"] ;
+		//مجلد ملفات العضو:pageUserFiles
 	echo 
 	  '<tr>
         <th>'.$lang[35] .'</th>
-        <td><span id="userTD" class="text-warning">'.$info["username"].'</span></td>
+        <td><span id="userTD" class="text-warning">'.$_username_html.'</span></td>
       </tr>'; 
 	  echo (thumbnail && $info["thumbnail"]) ?  
 	  '<tr>
@@ -121,6 +124,7 @@ else
 //echo  '<span class="badge"><small>'.time_elapsed_string(date('Y-m-d H:i:s',Sql_Get_Last_date_Download($DownloadID))).'</small></span>';	  
 //unset($DownloadID);
 unset($_crypt_id);
+unset($userId);
 
 //mysqli_close($connection);
 

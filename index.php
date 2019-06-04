@@ -103,6 +103,8 @@ if(isGet('reset_ok') || isGet('reset_failed'))
 	require_once ('./modals/reset.php');
 elseif(isGet('download'))
 	require_once ('./modals/download.php');
+elseif(isGet('files') && isGet('user'))
+    ( showUserfiles ) ? require_once ('./modals/files.php') : Not_Allowed_to_Access() ;  	
 elseif(isGet('files'))
     ( IsLogin ) ? require_once ('./modals/files.php') : Need_Login() ;  
 elseif(isGet('about'))

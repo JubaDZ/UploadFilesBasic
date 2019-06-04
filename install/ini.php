@@ -17,7 +17,7 @@ define('maxsize','20M');
 define('extensions','gif,jpg,jpeg,png,zip,rar,pdf,doc,docx,flv,3gp,wmv,mp4,mp3');
 define('rowsperpage','10');
 define('style','styles.css');	
-define('scriptversion','0.9.6');	
+define('scriptversion','0.9.7');	
 define('authorized','0');	
 define('terms','');	
 define('privacy','');
@@ -41,6 +41,7 @@ define('ApiStatus','1');
 define('access_contact','1');
 define('access_plans','1');
 define('access_forgot','1');
+define('showUserfiles','1');
 
 //define('dbprefix','db_');
 (!defined('dbhost')) ? define('dbhost','localhost'): '';

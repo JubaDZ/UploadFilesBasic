@@ -5,8 +5,9 @@ require_once ('../includes/functions.php');
 require_once ('../includes/connect.php');
 require_once ('../includes/languages/'.LANG_FILE);
 (!defined('Extensions_Html')) ? define('Extensions_Html' , ExtensionsHtml() ) : '' ;
-(!defined('footerTxt'))      ? define('footerTxt',FooterInfo()) : '' ;
-(!defined('StatsPanel'))     ? define('StatsPanel',StatsPanel('.'.folderupload)) : '' ;
+(!defined('footerTxt'))       ? define('footerTxt',FooterInfo()) : '' ;
+(!defined('StatsPanel'))      ? define('StatsPanel',StatsPanel('.'.folderupload)) : '' ;
+$Public_user_id = (isGet('user')) ? (int)$_GET['user'] : UserID ;
 header("Content-type: text/javascript; charset: UTF-8");
 echo "
 var IsLogin     = Boolean('".(bool)IsLogin."'),
@@ -27,6 +28,7 @@ var IsLogin     = Boolean('".(bool)IsLogin."'),
 	DirectoryChanged  = Boolean('".(bool)DirectoryChanged."'),
 	UpdateBrowser  = Boolean('".(bool)UpdateBrowser."'),
 	IsGetFiles     = Boolean('".(bool)(isGet('files'))."'),
+	IsGetUser      = Boolean('".(bool)(isGet('user'))."'),
 	IsGetProfile   = Boolean('".(bool)(isGet('profile'))."'),
 	IsGetDownload  = Boolean('".(bool)(isGet('download'))."'),
 	IsGetRegister  = Boolean('".(bool)(isGet('register'))."'),
@@ -91,6 +93,7 @@ var IsLogin     = Boolean('".(bool)IsLogin."'),
 	PublicLbl   = '".$lang[176]."',
 	PrivateLbl  = '".$lang[177]."',
 	LblSuccessDeleted = '".$lang[197]."',
+	Public_user_id    = '". $Public_user_id ."',
 	WellColor   = '". (defined('WellColor') ? WellColor : 'ffffff') ."',
 	BodyColor   = '". (defined('BodyColor') ? BodyColor : 'ffffff')."',
 	FontColor   = '". (defined('FontColor') ? FontColor : '333333')."',
@@ -104,5 +107,11 @@ var currentpage = parseInt('".$currentpage."') ,
     totalpages  = parseInt('".$totalpages."') ,
 	rowsperpage = parseInt('".rowsperpage."') ; 
 } 
+
+if(IsGetUser)
+{
+var totalpages  = parseInt('".$totalpages."') ;
+}
 ";
+unset($Public_user_id);
 ?>

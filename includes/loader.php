@@ -16,6 +16,6 @@ if(isGet('delete'))
 	(delete_file($_GET['id'],$_GET['delete'],'.')) ? exit(header('Location: ./?download=deleteFile&confirm')) : exit(header('Location: ./?download=deleteFile&notfound'));	
 		
 define('PageTitle'      , Get_Page_Title()) ; 
-define('ContainerTitle' , get_main_title()) ; 
+define('ContainerTitle' , Get_Main_Title()) ; 
 defined('days_older') ? delete_file_older_than( 0 , days_older , '.') : '';
 ?>

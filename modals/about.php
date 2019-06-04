@@ -30,7 +30,7 @@
 					  <tr><td>bootpag.js</td><td>1.0.7</td><td>botmonster@7items.com</td></tr>
 					  <tr><td>Summernote.js</td><td>0.8.2</td><td>Alan Hong</td></tr>
 					  <tr><td>Bootstrap.js</td><td>3.3.7</td><td>Twitter, Inc</td></tr>
-					  <tr><td>Functions.js</td><td>0.9.6</td><td>onexite</td></tr>
+					  <tr><td>Functions.js</td><td>0.9.7</td><td>onexite</td></tr>
 					  <tr><td>Bootstrap-select.js</td><td>1.12.1</td><td>caseyjhol</td></tr>
 					  <tr><td>bootstrap-checkbox.js</td><td>1.0.1</td><td>Roberto Montresor</td></tr>
 					  <tr><td>bootbox.js</td><td>4.4.0</td><td>Nick Payne</td></tr>

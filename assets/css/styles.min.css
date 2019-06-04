@@ -839,3 +839,4 @@ td.cell-collapse {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.overflow_wrap{overflow-wrap: break-word;}

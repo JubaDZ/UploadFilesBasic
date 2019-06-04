@@ -79,6 +79,7 @@ $ApiStatus          = isPost('ApiStatus') ?  1 : 0 ;
 $access_contact     = isPost('access_contact') ?  1 : 0 ;
 $access_plans       = isPost('access_plans') ?  1 : 0 ;
 $access_forgot      = isPost('access_forgot') ?  1 : 0 ;
+$showUserfiles      = isPost('showUserfiles') ?  1 : 0 ;
 
 $folderupload = protect($_POST['folderupload']);
 $prefixname   = protect($_POST['prefixname']);
@@ -341,6 +342,7 @@ Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('ApiStatus', '$ApiSt
 Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('access_contact', '$access_contact');");
 Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('access_plans', '$access_plans');");
 Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('access_forgot', '$access_forgot');");
+Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('showUserfiles', '$showUserfiles');");
 
 Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('speed', '$speed');");
 Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('days_older', '$days_older');");
@@ -1005,7 +1007,10 @@ $.ajax({
         <input type="text"  class="form-control" placeholder="<?php echo $lang[258].$lang[284] ?>" disabled>
     </div>
 	
-	
+	<div class="input-group">
+      <span class="input-group-addon"><input name="showUserfiles" type="checkbox" <?php if(showUserfiles) echo ' checked' ?>> <?php echo $lang[294] ?></span>
+        <input type="text"  class="form-control" placeholder="<?php echo $lang[258].$lang[294] ?>" disabled>
+    </div>
 	
 	
 	

@@ -545,8 +545,8 @@ function Sql_Get_Visitors_Count()
 
 
 function getLocationInfoByIp(){
-
-	 $result  = array('countryName'=>'Unknown', 'countryCode'=>'UN', 'city'=>'Unknown', 'ip'=>ip() ,'iptolong' =>iplong( defined('VisitorIp') ? VisitorIp : ip() ));
+     global $lang;
+	 $result  = array('countryName'=>$lang[293], 'countryCode'=>'UN', 'city'=>$lang[293], 'ip'=>ip() ,'iptolong' =>iplong( defined('VisitorIp') ? VisitorIp : ip() ));
 	/*---------------------------------------------------------------------------------------------*/
 	if(defined('VisitorIp')) 
 	if((VisitorIp==ip()) && defined('VisitorCountryName') && defined('VisitorCity') && defined('VisitorCountryCode') )
@@ -577,8 +577,9 @@ function getLocationInfoByIp(){
 
  function getLocationInfoByIp_2($ip='')//Geo
  {
+	 global $lang;
 	 $ip = ($ip=='') ? ip() : $ip ;
-	 $result  = array('countryName'=>'Unknown', 'countryCode'=>'UN', 'city'=>'Unknown', 'ip'=>$ip ,'iptolong' =>iplong( defined('VisitorIp') ? VisitorIp : $ip ));
+	 $result  = array('countryName'=>$lang[293], 'countryCode'=>'UN', 'city'=>$lang[293], 'ip'=>$ip ,'iptolong' =>iplong( defined('VisitorIp') ? VisitorIp : $ip ));
 
 	/*---------------------------------------------------------------------------------------------*/
 	if(defined('VisitorIp')) 
@@ -794,6 +795,10 @@ function folderSize ($dir)
 	unset($files);
     return $size;
 }
+function User_Not_Exists() {
+	global $lang;
+	echo '<i class="glyphicon glyphicon-question-sign"></i> ' . $lang[295] ;
+}
 
 function Registration_Disabled() {
 	global $lang;
@@ -829,7 +834,7 @@ function Get_Ads($ads_page) {
 	include ('./modals/poster.php') ;
 }
 
-function get_main_title($_param ='') {
+function Get_Main_Title($_param ='') {
 	global $lang;
 
     if(isGet($_param.'download') && (isGet('confirm') || isGet('notfound')) )
@@ -838,6 +843,8 @@ function get_main_title($_param ='') {
 	    return $lang[230] ;
  	elseif(isGet($_param.'download')) 
 		return $lang[31] ;
+	elseif(isGet($_param.'files') && isGet($_param.'user')  )
+	 return  (showUserfiles && Sql_user_exists($_GET[$_param.'user'])) ? $lang[294].' - '. Sql_Get_Username($_GET['user']) : $lang[294] ;	
 	elseif(isGet($_param.'files') )
 	    return  $lang[48] ;
 	elseif(isGet($_param.'profile') )	
@@ -869,7 +876,7 @@ function get_main_title($_param ='') {
 function ExtensionsHtml($split=true)
 {
 	global $lang;
-	return (!$split) ? $lang[24].' <spin class="text-primary">'.FileSizeConvert(MaxFileSize).'</spin> , '.$lang[25].' <spin class="text-primary">'.extensions.'</spin>' : $lang[24].' <spin class="text-primary">'.FileSizeConvert(MaxFileSize).'</spin> , '.$lang[25].' <spin class="text-primary">'.split_text(extensions,50,'... <a href="javascript:void(0)" onclick="ExtReadMore()" >'.$lang[244].'</a>').'</spin>';
+	return (!$split) ? $lang[24].' <spin class="text-primary">'.FileSizeConvert(MaxFileSize).'</spin> , '.$lang[25].' <spin class="text-primary overflow_wrap">'.extensions.'</spin>' : $lang[24].' <spin class="text-primary">'.FileSizeConvert(MaxFileSize).'</spin> , '.$lang[25].' <spin class="text-primary">'.split_text(extensions,50,'... <a href="javascript:void(0)" onclick="ExtReadMore()" >'.$lang[244].'</a>').'</spin>';
 }
 
 function ExtensionsStr()
@@ -1606,10 +1613,16 @@ $id = (int)$id;
 return fetch_assoc(Sql_query("SELECT `originalFilename` FROM `files` WHERE  `id`= '$id'"),'originalFilename');                		 
 }
 
-function Sql_file_exsist($filename)
+function Sql_file_exists($filename)
 {
 $filename = protect($filename);
 return num_rows(Sql_query("SELECT 1 FROM `files` WHERE  `filename`= '$filename'"));                		 
+}
+
+function Sql_user_exists($user_id)
+{
+$user_id = (int)$user_id;
+return num_rows(Sql_query("SELECT 1 FROM `users` WHERE  `id`= '$user_id'"));                		 
 }
 
 function Sql_Get_Reports_Count($file_id=0)
@@ -1674,7 +1687,7 @@ return fetch_assoc(Sql_query("SELECT `level` FROM `users` WHERE  `username`= '$u
 
 function Sql_Get_Files_Count($_is_total = false)
 {
-	return $_is_total ? num_rows(Sql_query("SELECT 1 FROM `files`")) : num_rows(Sql_query("SELECT 1 FROM `files` WHERE `userId`='".UserID."'")) ;
+	return $_is_total ? num_rows(Sql_query("SELECT 1 FROM `files`")) : Sql_Get_Files_user_Count(UserID) ;
 }
 
 function Sql_Get_Downloads_Count($_is_total = false)
@@ -1787,8 +1800,9 @@ function GetCountryCode($country,$Language = InterfaceLanguage)
 
 function GetCountryName($countryCode,$Language = InterfaceLanguage)
 {
+	global $lang;
 	require('libraries/countrycodes.php');
-	return (array_key_exists($countryCode,$countrycodes)) ? $countrycodes[$countryCode] : 'Unknown';  
+	return (array_key_exists($countryCode,$countrycodes)) ? $countrycodes[$countryCode] : $lang[293];  
 	/*
 	$names = json_decode(file_get_contents('country_names.json'), true);
 	$CountryName = $names[$countryCode];

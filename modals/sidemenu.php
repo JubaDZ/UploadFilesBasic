@@ -8,13 +8,17 @@
               <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><i class="glyphicon glyphicon-home"></i> <?php echo $lang[21]?></a>
             </h4>
           </div>
-          <div id="collapseOne" class="panel-collapse collapse <?php if(GetIsEmpty || isGet('plans') || isGet('contact') || isGet('download') ) echo ' in';?>">
+          <div id="collapseOne" class="panel-collapse collapse <?php if(GetIsEmpty || (isGet('user')&& isGet('files')) || isGet('plans') || isGet('contact') || isGet('download') ) echo ' in';?>">
             <div class="list-group">
 			  <a class="list-group-item<?php echo GetIsEmpty ? ' active' : '';?>" href="./"  ><i class="glyphicon glyphicon-cloud-upload"></i> <?php echo $lang[1]?></a>
 			  <?php if(isGet('download')) {?>
 			  <a href="javascript:void(0)"  class= "list-group-item active"  ><i class="glyphicon glyphicon-download-alt"></i> <?php echo $lang[128]?></a>
 			  <?php }?>
 			  
+			  <?php if(isGet('user')&& isGet('files')) {?>
+              <a class="list-group-item <?php actv2('files')?>" href="?files" ><i class="glyphicon glyphicon-hdd"></i> <?php echo $lang[294]?></a>
+			  <?php } //_get_user_file_by_id ?>
+			   
 			  <?php if(access_contact) {?>
 			  <a class="list-group-item<?php actv2('contact') ?>" href="?contact"><i class="glyphicon glyphicon-envelope"></i> <?php echo $lang[22]?></a>
 			  <?php } if(access_plans) {?>
@@ -29,10 +33,10 @@
               <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><i class="glyphicon glyphicon-user <?php echo (IsLogin) ? 'text-info':'text-muted' ?>"></i> <?php echo $lang[192]?> </a> 
             </h4>
           </div>
-          <div id="collapseFour" class="panel-collapse collapse <?php if( isGet('register') ||  isGet('forgot') || isGet('files') || isGet('login') || isGet('profile') || isGet('authorized') ) echo ' in';?>">
+          <div id="collapseFour" class="panel-collapse collapse <?php if( isGet('register') ||  isGet('forgot') || (isGet('files') && !isGet('user')) || isGet('login') || isGet('profile') || isGet('authorized') ) echo ' in';?>">
             <div class="list-group">
-           
-			   <?php if(IsLogin) {?>
+			  
+			   <?php if(IsLogin && !isGet('user')) {?>
 			   <a class="list-group-item <?php actv2('files')?>" href="?files" ><i class="glyphicon glyphicon-hdd"></i> <?php echo $lang[50]?></a>
 			   <a class="list-group-item<?php actv2('profile')?>" href="?profile" ><i class="glyphicon glyphicon-user"></i> <?php echo $lang[30]?></a>
 			   <?php  if(IsAdmin) {?>

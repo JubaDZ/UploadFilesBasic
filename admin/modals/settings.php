@@ -232,6 +232,12 @@
 		<span class="input-group-addon" style="min-width: 15px;text-align: left;"><input name="access_forgot" class="settings" type="checkbox" <?php if(access_forgot) echo ' checked' ?>></span>
     </div>
 	
+	<div class="input-group">
+      <span class="input-group-addon"> <?php echo $lang[294] ?></span>
+        <input type="text"  class="form-control hidden-sml" placeholder="<?php echo $lang[258].$lang[294]  ?>" disabled>
+		<span class="input-group-addon" style="min-width: 15px;text-align: left;"><input name="showUserfiles" class="settings" type="checkbox" <?php if(showUserfiles) echo ' checked' ?>></span>
+    </div>
+	
     </div> <!-- tab-permissions -->
 	
 	

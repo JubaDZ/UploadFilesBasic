@@ -1,7 +1,6 @@
 <?php
 ob_get_contents();
-ob_end_clean();
-
+ob_end_clean();	
 (isset($_GET['captcha'])) ? exit(require_once ('../includes/libraries/captcha.php')) : '';
 
 require_once ( '../includes/config.php');
@@ -27,7 +26,7 @@ require_once ( '../includes/libraries/uploader.php'); //dirname(__FILE__) .
 (isGet('api') && isGet('stats_dates') && !ApiLogin ) ? IePrintArray(array('success' => false, 'msg' => $lang[98],'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) : '' ; 
 (isGet('api') && isGet('api_extensions') && !ApiLogin ) ? IePrintArray(array('success' => false, 'msg' => $lang[98],'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) : '' ; 
 
-(!isGet('api')) ?  AJAX_check(data_format) : '';
+(!isGet('api') && (!isGet('files') && !isGet('user') || !showUserfiles)) ?  AJAX_check(data_format) : '';
 
 /*-----------------------------------------------------------------*/
 (!Mysqli_IsConnect) ? PrintArray(array('error_msg'=> 'Mysqli '.$lang[179]),data_format) : '';
@@ -69,7 +68,7 @@ $currentpage = (isGet('currentpage') && is_numeric($_GET['currentpage'])) ? (int
 (isGet('total_stats') )            ? PrintArray(array('downloads' => Sql_Get_Downloads_Count(true), 'users' => Sql_Get_Users_Count() ,'files' => Sql_Get_Files_Count(true) ,'visitors' => Sql_Get_Visitors_Count() , ExtensionsStats() ),data_format) : '';
 (isGet('get_extensions') )         ? PrintArray(array('value' => ExtensionsHtml(false)),data_format) : '';
 (isGet('api_extensions') )         ? PrintArray(array('value' => ExtensionsStr()),data_format) : '';
-(isGet('total_pages') && IsLogin ) ? PrintArray(array('value' => Sql_totalpages()),data_format) : '';
+(isGet('total_pages') )            ? PrintArray(array('value' => Sql_totalpages()),data_format) : '';
 (isGet('get_space') && IsLogin )   ? PrintArray(array('free' => PercentageFree , 'used'=> PercentageUsed),data_format) : '';
 (isGet('upload_max') )             ? PrintArray(Upload_Max(),data_format) : '';
 (isGet('top_downloads') )          ? PrintArray(Sql_Get_Top_Downloads(),data_format) : '';
@@ -241,7 +240,7 @@ $FolderUploadId  = FolderUploadId;
 ((IsLogin) && (UserSpaceLeft<=0))   ? IePrintArray(array('success' => false, 'msg' => $lang[173].' / '.$lang[117] ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) : '' ;  
 
 
-//if(Sql_file_exsist($_UploadFileName))
+//if(Sql_file_exists($_UploadFileName))
 	if(file_exists('..'. uploadDir.'/'.$_UploadFileName))
 	{
 		sleep(1); // sleep for 1 second
@@ -622,6 +621,112 @@ PrintArray($data,data_format);
 
 }
 
+
+//-------------------------------------------------------------
+
+if (isGet('files')){
+if(!ApiLogin && !showUserfiles)
+{	
+(!isset($_SESSION['login'])) ? PrintArray(array('error_msg' => '<'.$lang[98].'>'),data_format) : '' ;
+(!IsLogin)                   ? PrintArray(array('error_msg' => $lang[98]),data_format) : '';
+}
+
+$IsJson = (isGet('json') || isGet('xml')) ? true : false ;
+$userId = (isGet('user') && showUserfiles ) ? (int)$_GET['user'] : UserID ;
+// find out total pages
+$total = Sql_Get_Files_user_Count($userId);
+$totalpages = ceil( $total / rowsperpage);
+$count = 0;
+$currentpage = ($currentpage > $totalpages) ? $totalpages : $currentpage;
+$currentpage = ($currentpage < 1) ? 1 : $currentpage;
+$totalpages  = ($totalpages < 1) ? 1 :$totalpages;
+
+$offset = ($currentpage - 1) * rowsperpage;
+
+$html="";
+
+if(isGet('user') && showUserfiles)	
+$sql ="SELECT * FROM `files` WHERE `userId`='".$userId."' AND `isPublic` = '1' ORDER BY `id` DESC LIMIT $offset, ".rowsperpage;
+else 
+$sql ="SELECT * FROM `files` WHERE `userId`='".$userId."' ORDER BY `id` DESC LIMIT $offset, ".rowsperpage;
+	
+if ($result=Sql_query($sql))
+	$num_rows =	num_rows($result);
+  while($row = mysqli_fetch_assoc($result))
+  { 
+
+      $count++;
+      $_originalFilename = "'".$row["originalFilename"]."'";
+	  $_Filename         = (enable_orgFilename) ? $_originalFilename : "'".$row["filename"]."'";
+	  $_file_id          = $row["id"];
+	  $_crypt_id         = "'".Encrypt($_file_id)."'";
+	  $_deleteHash       = "'".$row["deleteHash"]."'";
+	  $folder            = Sql_Get_folder($row['folderId']);
+	  $org_filename      = (enable_orgFilename) ? $row["originalFilename"] : $row["filename"] ;
+	  $_thumbnaildir     = (ext_is_image('..'.$folder.'/'.$row["filename"]) && file_exists('..'.$folder.'/_thumbnail/'.get_thumbnail($row["filename"]))) ? ($folder.'/_thumbnail/'.get_thumbnail($row["filename"])):'';
+	   
+	  $css    = (empty($row["accessPassword"]))                          ? ' text-muted' : '' ;
+	  $dcss   = ($row["totalDownload"]==0)                               ? ' text-muted' : '' ;
+	  $onclick= (($row["totalDownload"]==0) && (IsAdmin || statistics))  ? '' : 'StatsFile('.$_file_id.','.$_originalFilename.')';
+	  $size   = FileSizeConvert($row["fileSize"]);
+      $date   = (date('Y-m-d H:i:s',$row["uploadedDate"])) ;
+if($IsJson){
+	$html[] = array( 'public'      => (string)$row["isPublic"], 
+					 'fileid'      => (string)$_file_id,
+					 'date'        => time_elapsed_string($date), 
+					 'size'        => $size,
+					 'folder'      => $folder,
+					 'filename'    => $row["filename"], 
+					 'orgfilename' => $row["originalFilename"], 
+					 'downurl'     => '/?download='.Encrypt($_file_id),
+					 'downtotal'   => (string)$row["totalDownload"], 
+					 'comments'    => (string)Sql_Get_Comments_Count($_file_id),
+					 'deletehash'  => (string)$row["deleteHash"],
+					 'accesspass'  => (empty($row["accessPassword"])) ? '0' : '1' ,
+					 'cryptid'     => Encrypt($_file_id),
+					 'thumbnaildir'=> $_thumbnaildir ); 
+	} else {
+		  $html.= (file_exists('..'.$folder.'/'.$row["filename"])) ? '<tr id="file_'.$_file_id.'">' : '<tr id="file_'.$_file_id.'" class="danger">'; /*title="'.$row["originalFilename"].'"'.icon($row["filename"]).' */
+		  $html.= (IsLogin) ? '<td><input value="'.$_file_id.'" id="checkbox_'.$_file_id.'" type="checkbox"  name="files[]" onclick="calcItems('.$_file_id.')" class="checkbox" /></td>':'';
+		  $html.=   '<td class="cell-collapse"><input style="display:none" value="'.$row["deleteHash"].'" type="checkbox" id="deletehash_'.$_file_id.'" class="deletehash hidden" name="deletehash[]"/>
+				     <a href="javascript:void(0)" rel="tooltip" id="fileInfo_'.$count.'"
+					 data-numrows="'.$num_rows.'" 
+					 data-fileid="'.$_file_id.'" 
+					 data-date="'.time_elapsed_string($date).'" 
+					 data-size="'.$size.'" 
+					 data-folder="'.$folder.'" 
+					 data-filename="'.$row["filename"].'" 
+					 data-orgfilename="'.$row["originalFilename"].'" 
+					 data-downurl="/?download='.Encrypt($_file_id).'"
+					 data-downtotal="'.$row["totalDownload"].'" 
+					 data-deletehash="'.$_deleteHash.'" 
+					 data-cryptid="'.Encrypt($_file_id).'" 
+					 data-thumbnaildir="'. $_thumbnaildir .'"
+					 href="javascript:void(0)" onclick="FileInfoModal('.$count.')">'.$org_filename.'</a>
+				</td>
+				<td class="hidden-xs">'.$size.'</td>
+				<td class="hidden-xs"><span class="badge">'.$row["totalDownload"].'</span></td>
+				<td class="hidden-xs"><span class="badge">'.Sql_Get_Comments_Count($_file_id).'</span></td>
+				<td class="hidden-xs">'.$date.'</td>';
+				(IsLogin)?
+				$html.=
+				'<td class="small">
+				 <a href="javascript:void(0)" rel="tooltip" title="'.$lang[32].'" onclick="deleteFile('.$_file_id.','.$_deleteHash.','.$currentpage.','.$_Filename.')"><i class="glyphicon glyphicon-trash"></i></a> 
+				 <a href="javascript:void(0)" rel="tooltip" title="'.$lang[37].'" onclick="passwordFile('.$_file_id.','."'".$row["accessPassword"]."'".','.$currentpage.')"><span id="isPassword_'.$_file_id.'"><i class="glyphicon glyphicon-lock'.$css.'"></i></span></a>
+				 <a href="javascript:void(0)" rel="tooltip" title="'.$lang[28].'" onclick="'.$onclick.'"><i class="glyphicon glyphicon-stats'.$dcss.'"></i></a>
+				 <a href="javascript:void(0)" rel="tooltip" title="'.$lang[176].'/'.$lang[177].'" onclick="isPublicFile('.$_file_id.')"><span id="isPublic_'.$_file_id.'" >'.glyphiconIsPublic($row["isPublic"]).'</span></a>
+				</td>':'';
+				$html.='</tr>';
+} // end else $IsJson
+  }
+($total==0) ? $data['error_msg'] = $lang[111] : $data['success_msg'] = $html ;
+($total==0) ? $data['success'] = false : $data['success'] = true ;
+$data['success_totalpages'] = $totalpages;
+mysqli_free_result($result);
+mysqli_close($connection);
+PrintArray($data,data_format);
+
+}
 /*-----------------------------------------------------------------*/
 
 if(!ApiLogin)
@@ -674,97 +779,7 @@ PrintArray($data,data_format) ;
 
 
 
-if (isGet('files')){
-$IsJson = (isGet('json') || isGet('xml')) ? true : false ;
-// find out total pages
-$total = Sql_Get_Files_Count();
-$totalpages = ceil( $total / rowsperpage);
-$count = 0;
-$currentpage = ($currentpage > $totalpages) ? $totalpages : $currentpage;
-$currentpage = ($currentpage < 1) ? 1 : $currentpage;
-$totalpages  = ($totalpages < 1) ? 1 :$totalpages;
 
-$offset = ($currentpage - 1) * rowsperpage;
-
-$html="";
-$sql ="SELECT * FROM `files` WHERE `userId`='".UserID."' ORDER BY `id` DESC LIMIT $offset, ".rowsperpage;
-
-if ($result=Sql_query($sql))
-	$num_rows =	num_rows($result);
-  while($row = mysqli_fetch_assoc($result))
-  { 
-
-      $count++;
-      $_originalFilename = "'".$row["originalFilename"]."'";
-	  $_Filename         = (enable_orgFilename) ? $_originalFilename : "'".$row["filename"]."'";
-	  $_file_id          = $row["id"];
-	  $_crypt_id         = "'".Encrypt($_file_id)."'";
-	  $_deleteHash       = "'".$row["deleteHash"]."'";
-	  $folder            = Sql_Get_folder($row['folderId']);
-	  $org_filename      = (enable_orgFilename) ? $row["originalFilename"] : $row["filename"] ;
-	  $_thumbnaildir     = (ext_is_image('..'.$folder.'/'.$row["filename"]) && file_exists('..'.$folder.'/_thumbnail/'.get_thumbnail($row["filename"]))) ? ($folder.'/_thumbnail/'.get_thumbnail($row["filename"])):'';
-	   
-	  $css    = (empty($row["accessPassword"]))                          ? ' text-muted' : '' ;
-	  $dcss   = ($row["totalDownload"]==0)                               ? ' text-muted' : '' ;
-	  $onclick= (($row["totalDownload"]==0) && (IsAdmin || statistics))  ? '' : 'StatsFile('.$_file_id.','.$_originalFilename.')';
-	  $size   = FileSizeConvert($row["fileSize"]);
-      $date   = (date('Y-m-d H:i:s',$row["uploadedDate"])) ;
-if($IsJson){
-	$html[] = array( 'public'      => (string)$row["isPublic"], 
-					 'fileid'      => (string)$_file_id,
-					 'date'        => time_elapsed_string($date), 
-					 'size'        => $size,
-					 'folder'      => $folder,
-					 'filename'    => $row["filename"], 
-					 'orgfilename' => $row["originalFilename"], 
-					 'downurl'     => '/?download='.Encrypt($_file_id),
-					 'downtotal'   => (string)$row["totalDownload"], 
-					 'comments'    => (string)Sql_Get_Comments_Count($_file_id),
-					 'deletehash'  => (string)$row["deleteHash"],
-					 'accesspass'  => (empty($row["accessPassword"])) ? '0' : '1' ,
-					 'cryptid'     => Encrypt($_file_id),
-					 'thumbnaildir'=> $_thumbnaildir ); 
-	} else {
-		  $html.= (file_exists('..'.$folder.'/'.$row["filename"])) ? '<tr id="file_'.$_file_id.'">' : '<tr id="file_'.$_file_id.'" class="danger">'; /*title="'.$row["originalFilename"].'"'.icon($row["filename"]).' */
-		  $html.= 
-		       '<td><input value="'.$_file_id.'" id="checkbox_'.$_file_id.'" type="checkbox"  name="files[]" onclick="calcItems('.$_file_id.')" class="checkbox" /></td>
-		        <td class="cell-collapse"><input style="display:none" value="'.$row["deleteHash"].'" type="checkbox" id="deletehash_'.$_file_id.'" class="deletehash hidden" name="deletehash[]"/>
-				     <a href="javascript:void(0)" rel="tooltip" id="fileInfo_'.$count.'"
-					 data-numrows="'.$num_rows.'" 
-					 data-fileid="'.$_file_id.'" 
-					 data-date="'.time_elapsed_string($date).'" 
-					 data-size="'.$size.'" 
-					 data-folder="'.$folder.'" 
-					 data-filename="'.$row["filename"].'" 
-					 data-orgfilename="'.$row["originalFilename"].'" 
-					 data-downurl="/?download='.Encrypt($_file_id).'"
-					 data-downtotal="'.$row["totalDownload"].'" 
-					 data-deletehash="'.$_deleteHash.'" 
-					 data-cryptid="'.Encrypt($_file_id).'" 
-					 data-thumbnaildir="'. $_thumbnaildir .'"
-					 href="javascript:void(0)" onclick="FileInfoModal('.$count.')">'.$org_filename.'</a>
-				</td>
-				<td class="hidden-xs">'.$size.'</td>
-				<td class="hidden-xs"><span class="badge">'.$row["totalDownload"].'</span></td>
-				<td class="hidden-xs"><span class="badge">'.Sql_Get_Comments_Count($_file_id).'</span></td>
-				<td class="hidden-xs">'.$date.'</td>
-				<td class="small">
-				 <a href="javascript:void(0)" rel="tooltip" title="'.$lang[32].'" onclick="deleteFile('.$_file_id.','.$_deleteHash.','.$currentpage.','.$_Filename.')"><i class="glyphicon glyphicon-trash"></i></a> 
-				 <a href="javascript:void(0)" rel="tooltip" title="'.$lang[37].'" onclick="passwordFile('.$_file_id.','."'".$row["accessPassword"]."'".','.$currentpage.')"><span id="isPassword_'.$_file_id.'"><i class="glyphicon glyphicon-lock'.$css.'"></i></span></a>
-				 <a href="javascript:void(0)" rel="tooltip" title="'.$lang[28].'" onclick="'.$onclick.'"><i class="glyphicon glyphicon-stats'.$dcss.'"></i></a>
-				 <a href="javascript:void(0)" rel="tooltip" title="'.$lang[176].'/'.$lang[177].'" onclick="isPublicFile('.$_file_id.')"><span id="isPublic_'.$_file_id.'" >'.glyphiconIsPublic($row["isPublic"]).'</span></a>
-				</td>
-				</tr>';
-} // end else $IsJson
-  }
-($total==0) ? $data['error_msg'] = $lang[111] : $data['success_msg'] = $html ;
-($total==0) ? $data['success'] = false : $data['success'] = true ;
-$data['success_totalpages'] = $totalpages;
-mysqli_free_result($result);
-mysqli_close($connection);
-PrintArray($data,data_format);
-
-}
 /*------------------------------------------------------------------*/
 if(isGet('filepass'))
 {

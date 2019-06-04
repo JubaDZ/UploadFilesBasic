@@ -89,12 +89,12 @@
       </tr> 
 	  <?php } ?>
 	  
+	  <?php if( IsLogin ){ ?>
 	 <tr>
         <th><?php echo $lang[32]?></th>
         <td id="fileInfo_delete">--</td>
      </tr> 
-	 
-	 
+	  <?php } ?>
 	  <tr><td colspan="2" id="FileInfosResults" class="text-center"></td></tr>
 	
 	

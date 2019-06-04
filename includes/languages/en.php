@@ -294,4 +294,7 @@ $lang[289] =  'A new password has been sent to your e-mail address.';
 $lang[290] =  'An error occurred when sending';
 $lang[291] =  'Extensions';
 $lang[292] =  'File Downloads';
+$lang[293] =  'Unknown';
+$lang[294] =  'User files';
+$lang[295] =  'This user does not exist';
 ?>

@@ -254,6 +254,7 @@ $ApiStatus          = isPost('ApiStatus') ?  1 : 0 ;
 $access_contact     = isPost('access_contact') ?  1 : 0 ;
 $access_plans       = isPost('access_plans') ?  1 : 0 ;
 $access_forgot      = isPost('access_forgot') ?  1 : 0 ;
+$showUserfiles      = isPost('showUserfiles') ?  1 : 0 ;
 
 $folderupload       = protect($_POST['folderupload']);
 $prefixname         = protect($_POST['prefixname']);
@@ -327,6 +328,7 @@ Sql_query("UPDATE `settings` SET `value` = '$ApiStatus' WHERE `name` = 'ApiStatu
 Sql_query("UPDATE `settings` SET `value` = '$access_contact' WHERE `name` = 'access_contact';"); 
 Sql_query("UPDATE `settings` SET `value` = '$access_plans' WHERE `name` = 'access_plans';"); 
 Sql_query("UPDATE `settings` SET `value` = '$access_forgot' WHERE `name` = 'access_forgot';"); 
+Sql_query("UPDATE `settings` SET `value` = '$showUserfiles' WHERE `name` = 'showUserfiles';"); 
 
 Sql_query("UPDATE `folders` SET `folderName` = '$folderupload', `date_added` = '".timestamp()."' WHERE `id` = '".(int)Get_folderId_By_UserId(0)."';");
 //Sql_query("UPDATE `settings` SET `value` = '12/10/2016' WHERE `name` = 'installdate';");
