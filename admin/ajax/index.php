@@ -169,7 +169,7 @@ if ($result=Sql_query($sql))
 	$html = '<tr><td colspan="7">'.$lang[111].'</td></tr>';
 
 $data['success_msg'] = $html;
-$data['success_totalpages'] = $totalpages ;
+$data['totalpages'] = $totalpages ;
 mysqli_free_result($result);
 mysqli_close($connection);
 PrintArray($data) ;
@@ -196,7 +196,7 @@ if (isGet('backup'))
 						</tr>';
 			 
 $data['success_msg'] = $html;
-$data['success_totalpages'] = $totalpages ;
+$data['totalpages'] = $totalpages ;
 mysqli_close($connection);
 PrintArray($data) ;	
 
@@ -489,7 +489,7 @@ if($total==0)
 	$html = '<tr><td colspan="7">'.$lang[111].'</td></tr>';
 
 $data['success_msg'] = $html;
-$data['success_totalpages'] = $totalpages ;
+$data['totalpages'] = $totalpages ;
 mysqli_free_result($result);
 mysqli_close($connection);
 PrintArray($data) ;
@@ -555,7 +555,7 @@ if ($result=Sql_query($sql))
 	$html = '<tr><td colspan="8">'.$lang[111].'</td></tr>';
 
 $data['success_msg'] = $html;
-$data['success_totalpages'] = $totalpages ;
+$data['totalpages'] = $totalpages ;
 mysqli_free_result($result);
 mysqli_close($connection);
 PrintArray($data) ;
@@ -600,7 +600,7 @@ while($row = mysqli_fetch_assoc($result))
 				</tr>';
 				
 $data['success_msg'] = $html;
-$data['success_totalpages'] = 1 ;
+$data['totalpages'] = 1 ;
 mysqli_free_result($result);
 mysqli_close($connection);
 PrintArray($data) ;
@@ -671,7 +671,7 @@ if ($result=Sql_query($sql))
 	$html = '<tr><td colspan="6">'.$lang[111].'</td></tr>';
 
 $data['success_msg'] = $html;
-$data['success_totalpages'] = $totalpages ;
+$data['totalpages'] = $totalpages ;
 mysqli_free_result($result);
 mysqli_close($connection);
 PrintArray($data) ;
@@ -733,7 +733,7 @@ if ($result=Sql_query($sql))
 	$html = '<tr><td colspan="8">'.$lang[111].'</td></tr>';
 
 $data['success_msg'] = $html;
-$data['success_totalpages'] = $totalpages ;
+$data['totalpages'] = $totalpages ;
 mysqli_free_result($result);
 mysqli_close($connection);
 PrintArray($data) ;
@@ -839,7 +839,7 @@ if($total==0)
 	$html = '<tr><td colspan="9">'.$lang[59].'(0)</td></tr>';
 
 $data['success_msg'] = $html;
-$data['success_totalpages'] = $totalpages ;
+$data['totalpages'] = $totalpages ;
 if($result)
 mysqli_free_result($result);
 mysqli_close($connection);
@@ -869,7 +869,7 @@ if(isGet('delete_selected'))
 						if(Sql_Delete_Comment_Id($id))
 							$result[]=  $id ;
 			}
-	PrintArray(array('success_msg' => $result ,'success_totalpages' => ceil(num_rows(Sql_query("SELECT 1 FROM `files`"))/rowsperpage) ));	
+	PrintArray(array('success_msg' => $result ,'totalpages' => ceil(num_rows(Sql_query("SELECT 1 FROM `files`"))/rowsperpage) ));	
 	}
 	
 	if(isPost('users'))
@@ -878,7 +878,7 @@ if(isGet('delete_selected'))
      foreach ($_POST['users'] as $id) {
 			if(Sql_Delete_User($id)) $result[]=  $id ; 
 			}
-	PrintArray(array('success_msg' => $result ,'success_totalpages' =>   ceil(num_rows(Sql_query("SELECT 1 FROM `users`"))/rowsperpage) ));	
+	PrintArray(array('success_msg' => $result ,'totalpages' =>   ceil(num_rows(Sql_query("SELECT 1 FROM `users`"))/rowsperpage) ));	
 	}
 	
 	if(isPost('comments'))
@@ -887,7 +887,7 @@ if(isGet('delete_selected'))
      foreach ($_POST['comments'] as $id) {
 			if(Sql_Delete_Comment($id)) $result[]=  $id ; 
 			}
-	PrintArray(array('success_msg' => $result ,'success_totalpages' =>   ceil(num_rows(Sql_query("SELECT 1 FROM `comments`"))/rowsperpage) ));	
+	PrintArray(array('success_msg' => $result ,'totalpages' =>   ceil(num_rows(Sql_query("SELECT 1 FROM `comments`"))/rowsperpage) ));	
 	}
 	
 	
@@ -897,7 +897,7 @@ if(isGet('delete_selected'))
      foreach ($_POST['reports'] as $id) {
 			if(Sql_Delete_Report($id)) $result[]=  $id ; 
 			}
-	PrintArray(array('success_msg' => $result ,'success_totalpages' =>  ceil(num_rows(Sql_query("SELECT 1 FROM `reports`"))/rowsperpage)   ));	
+	PrintArray(array('success_msg' => $result ,'totalpages' =>  ceil(num_rows(Sql_query("SELECT 1 FROM `reports`"))/rowsperpage)   ));	
 	}
 	
 	if(isPost('stats'))
@@ -906,7 +906,7 @@ if(isGet('delete_selected'))
      foreach ($_POST['stats'] as $id) {
 			if(Sql_Delete_Stat_File_Id($id)) $result[]=  $id ; 
 			}
-	PrintArray(array('success_msg' => $result ,'success_totalpages' =>  ceil(num_rows(Sql_query("SELECT DISTINCT `file_id` FROM `stats`"))/rowsperpage)   ));	
+	PrintArray(array('success_msg' => $result ,'totalpages' =>  ceil(num_rows(Sql_query("SELECT DISTINCT `file_id` FROM `stats`"))/rowsperpage)   ));	
 	}
 	
 	if(isPost('folders'))
@@ -919,7 +919,7 @@ if(isGet('delete_selected'))
 				if(Sql_Delete_Folder($id))
 					$result[]=  $id ; 
 			}
-	PrintArray(array('success_msg' => $result ,'success_totalpages' =>  ceil(num_rows(Sql_query("SELECT * FROM `folders`"))/rowsperpage)   ));	
+	PrintArray(array('success_msg' => $result ,'totalpages' =>  ceil(num_rows(Sql_query("SELECT * FROM `folders`"))/rowsperpage)   ));	
 	}
 	
 		

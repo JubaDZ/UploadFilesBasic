@@ -344,7 +344,9 @@
          <span style="color: #204a87; font-weight: bold">&quot;thumbnaildir&quot;</span><span style="color: #000000; font-weight: bold">:</span><span style="color: #4e9a06">&quot;\/uploads\/_thumbnail\/6c4507d627fd5adce23607b6fa168c2a.png&quot;</span>
       <span style="color: #000000; font-weight: bold">}</span>
    <span style="color: #000000; font-weight: bold">],</span>
-   <span style="color: #204a87; font-weight: bold">&quot;success_totalpages&quot;</span><span style="color: #000000; font-weight: bold">:</span><span style="color: #0000cf; font-weight: bold">4</span>
+   <span style="color: #204a87; font-weight: bold">&quot;success&quot;</span><span style="color: #000000; font-weight: bold">:</span><span style="color: #204a87; font-weight: bold">true</span><span style="color: #000000; font-weight: bold">,</span>
+   <span style="color: #204a87; font-weight: bold">&quot;totalpages&quot;</span><span style="color: #000000; font-weight: bold">:</span><span style="color: #0000cf; font-weight: bold">4</span><span style="color: #000000; font-weight: bold">,</span>
+   <span style="color: #204a87; font-weight: bold">&quot;currentpage&quot;</span><span style="color: #000000; font-weight: bold">:</span><span style="color: #0000cf; font-weight: bold">1</span>
 <span style="color: #000000; font-weight: bold">}</span>
 </pre>
 <li class="text-danger"><h4><?php echo $lang[95] ?> : </h4></li>

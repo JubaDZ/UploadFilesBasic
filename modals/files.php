@@ -2,18 +2,18 @@
 <?php 
 $userId      = (isGet('user')) ? (int)$_GET['user'] : UserID ;
 $user_exists = (Sql_user_exists($userId)) ? true : false;
+$IsMyfiles   = ($userId==UserID) ? true : false;
 $showfiles   = (Sql_user_showfiles($userId)) ? true : false;
-
 $currentpage = (isGet('currentpage') && is_numeric($_GET['currentpage'])) ? (int) $_GET['currentpage'] : 1;
 $totalpages  = ($user_exists) ? ceil(Sql_Get_Files_user_Count($userId) / rowsperpage) : 0;
 $totalpages  = ($totalpages < 1) ? 1 : $totalpages; 
-//echo '<pre>'.$totalpages.'</pre>';
+//echo '<pre>'.$userId.'='.UserID.'</pre>';
 ?>
 		   
 <div class="form-group">
 <?php if( $user_exists ) {?>
 <?php if(IsLogin || isGet('user')) {?>
-<?php if($showfiles && isGet('user')) {?>
+<?php if($showfiles && isGet('user') || $IsMyfiles ) {?>
 
 <form id="delete_files_form" role="form" onsubmit="return false;">  
 <div class="table-responsive <?php echo ClassAnimated ?> swing">

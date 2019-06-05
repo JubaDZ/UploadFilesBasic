@@ -614,7 +614,8 @@ if ($result=Sql_query($sql))
                     </div>';
   }
 ($total==0) ? $data['error_msg'] = $lang[111] : $data['success_msg'] = $html ;
-$data['success_totalpages'] = $totalpages;
+$data['totalpages'] = $totalpages;
+$data['currentpage'] = $currentpage;
 mysqli_free_result($result);
 mysqli_close($connection);
 PrintArray($data,data_format);
@@ -627,12 +628,21 @@ PrintArray($data,data_format);
 if (isGet('files')){
 if(!ApiLogin && !showUserfiles)
 {	
-(!isset($_SESSION['login'])) ? PrintArray(array('error_msg' => '<'.$lang[98].'>'),data_format) : '' ;
+(!isset($_SESSION['login'])) ? PrintArray(array('error_msg' => $lang[98]),data_format) : '' ;
 (!IsLogin)                   ? PrintArray(array('error_msg' => $lang[98]),data_format) : '';
 }
 
+
 $IsJson = (isGet('json') || isGet('xml')) ? true : false ;
 $userId = (isGet('user') && showUserfiles ) ? (int)$_GET['user'] : UserID ;
+$user_exists = (Sql_user_exists($userId)) ? true : false;
+$showfiles   = (Sql_user_showfiles($userId) && ($userId<>UserID)) ? true : false;
+$IsMyfiles   = ($userId==UserID) ? true : false;
+
+// show user file by userId
+(!$user_exists)? PrintArray(array('error_msg' => $lang[295]),data_format) : '' ;
+(!$showfiles && !$IsMyfiles)  ? PrintArray(array('error_msg' => $lang[280]),data_format) : '' ;
+
 // find out total pages
 $total = Sql_Get_Files_user_Count($userId);
 $totalpages = ceil( $total / rowsperpage);
@@ -721,7 +731,8 @@ if($IsJson){
   }
 ($total==0) ? $data['error_msg'] = $lang[111] : $data['success_msg'] = $html ;
 ($total==0) ? $data['success'] = false : $data['success'] = true ;
-$data['success_totalpages'] = $totalpages;
+$data['totalpages'] = $totalpages;
+$data['currentpage'] = $currentpage;
 mysqli_free_result($result);
 mysqli_close($connection);
 PrintArray($data,data_format);
@@ -839,7 +850,7 @@ if(isGet('delete_selected'))
 						if(Sql_Delete_Comment_Id($id))
 							$result[]=  $id ;
 			}
-	PrintArray(array('success_msg' => $result ,'success_totalpages' => Sql_totalpages() ),data_format);	
+	PrintArray(array('success_msg' => $result ,'totalpages' => Sql_totalpages() ),data_format);	
 	}
 }
 /*-----------------------------------------------------------------*/
