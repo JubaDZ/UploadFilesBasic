@@ -506,7 +506,7 @@ define('dbuser','$host_user');
 define('dbpass','$host_pass'); 
 define('dbname','$host_base'); 
 
-define('StatsPanel',false); //false-true
+define('StatsPanel',true); //false-true
 define('TotalStats',false); // home page  Require ApiStatus 
 define('OutputImage',true); //forceView
 define('EnableLogo',false);

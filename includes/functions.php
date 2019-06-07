@@ -543,6 +543,10 @@ function Sql_Get_Visitors_Count()
 	return (int)fetch_assoc(Sql_query("SELECT `value` FROM `settings` WHERE `name`= 'visitors'"),'value') ;
 }
 
+function Get_space_used()
+{
+	return (int)fetch_assoc(Sql_query("SELECT sum(fileSize) as sizeTotal FROM `files` "),'sizeTotal') ;
+}
 
 function getLocationInfoByIp(){
      global $lang;
@@ -756,7 +760,7 @@ function StatsPanel($directory){
 
 	$_Total_Files = Sql_Get_Files_Count(true) ;
 	$_Total_Users = Sql_Get_Users_Count() ; 
-	$_Total_Size  = ($_Total_Files==0) ? 0 : FileSizeConvert(folderSize( $directory ));	
+	$_Total_Size  = ($_Total_Files==0) ? 0 : FileSizeConvert(Get_space_used());	
 
 return '<b> '.$lang[42].'</b> '.$_Total_Size. '<br> <b>' . $lang[44]. '</b> '.$_Total_Files .'<br><b>'.$lang[73].'</b> '.$_Total_Users ;
 }

@@ -4,7 +4,7 @@ define('dbuser','root');
 define('dbpass',''); 
 define('dbname','db_uploads'); 
 
-define('StatsPanel',false); //false-true
+define('StatsPanel',true); //false-true
 define('TotalStats',false); // home page  Require ApiStatus 
 define('OutputImage',true); //forceView
 define('EnableLogo',false);

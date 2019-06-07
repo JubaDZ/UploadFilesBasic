@@ -1128,6 +1128,7 @@ $_folder_old = Get_folderName_By_FolderId( $folder_id );
 $userId = protect(Sql_Get_Username_id($_POST['username']));
 $ispublic = isPost('ispublic') ? 1 : 0 ;
 
+if (file_exists('../..'.$_folder_old))
 rename('../..'.$_folder_old,'../..'.$folderName);
 
 if(Sql_query("UPDATE `folders` SET `userId` = '$userId', `folderName` = '$folderName', `isPublic` = '$ispublic', `accessPassword` = '$accessPassword', `date_added` = '".timestamp()."' WHERE `id` = '$folder_id';"))

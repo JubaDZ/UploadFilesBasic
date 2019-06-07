@@ -5,7 +5,7 @@
 			<?php 
 		    if(GetIsEmpty && defined('Extensions_Html'))
 			{
-				echo "<div class='visible-xs'><div class='alert alert-info' id='extensions_mobile'>".Extensions_Html."</div></div>" ;
+				echo "<div class='visible-xs'><div class='alert alert-info overflow_wrap' id='extensions_mobile'>".Extensions_Html."</div></div>" ;
 				echo (file_exists('./install/')) ? error($lang[108].' ( <a href="./install/?unlink">'.$lang[32].'</a> )') : '';
 			}
             ?>

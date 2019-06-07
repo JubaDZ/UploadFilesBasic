@@ -90,7 +90,7 @@ define('t_reports'   ,num_rows(Sql_query("SELECT * FROM `reports`")) );
 define('t_comments'  ,num_rows(Sql_query("SELECT * FROM `comments`")) );
 define('t_statistics',num_rows(Sql_query("SELECT DISTINCT `file_id` FROM `stats`")) );
 define('t_files'     ,num_rows(Sql_query("SELECT * FROM `files` $search_param")) );
-define('t_size'      ,FileSizeConvert(folderSize( '..'.folderupload )) );
+define('t_size'      ,FileSizeConvert( Get_space_used() ) );
 define('t_reports_o' ,num_rows(Sql_query("SELECT * FROM `reports` WHERE `status` = '0'")) );
 define('t_comments_o',num_rows(Sql_query("SELECT * FROM `comments` WHERE `status` = '0'")) );
 define('u_encrypt_url',Encrypt('https://raw.githubusercontent.com/onexite/SuUpdate/master/update.json'));
