@@ -662,6 +662,9 @@ function Download_Attachment(ResultsID,formID) {
 }
 
 function request(parameter,ResultsID,formID) {
+	if(formID=='publicity_form')
+		$('#publicity_content').summernote('codeview.deactivate');
+			  
 	var results  = $("#"+ResultsID);
 	$.ajax({
            type: "POST",
@@ -671,8 +674,7 @@ function request(parameter,ResultsID,formID) {
           beforeSend: function() {
 			  if(formID=='settings_form')
 				  $("html, body").animate({ scrollTop: 0 }, "slow");
-			 
-				
+			  
 			  },
            success: function (data) {
                if(data['success_msg']) {
@@ -720,6 +722,7 @@ function request(parameter,ResultsID,formID) {
 				 }
 				  else if(formID=='publicity_form')
 				 {
+					
 					results.html("");
 					setInterval(redirect('?publicity'),1000); 
 				 }
