@@ -508,6 +508,9 @@ if (typeof(FilesTotal)==='undefined') FilesTotal = 1;
 
 }
 $('#page_name').on('change', function () {
+	
+	$("#PublicityResults").html("<code> "+PleaseWait+"</code>");
+	$("#btn_publicity").attr("disabled", true);
 	 page_name = $('#page_name').val();
 	 
 	 $('#publicity_content').summernote("code","");  
@@ -521,7 +524,7 @@ $('#page_name').on('change', function () {
 		 if(status=='success')
 		 {
 			
-			
+			 $("#btn_publicity").attr("disabled", false);
 			 $('#publicity_content').summernote('enable');
 			 $("#publicity_title").removeAttr('disabled');
 			 $("#PublicityResults").html(""); 
@@ -663,8 +666,9 @@ function Download_Attachment(ResultsID,formID) {
 
 function request(parameter,ResultsID,formID) {
 	if(formID=='publicity_form')
-		$('#publicity_content').summernote('codeview.deactivate');
-			  
+		if ( $("#"+formID).serialize().indexOf('ads_google') > -1)
+			$('#publicity_content').summernote('codeview.deactivate');
+		
 	var results  = $("#"+ResultsID);
 	$.ajax({
            type: "POST",
@@ -672,6 +676,7 @@ function request(parameter,ResultsID,formID) {
            dataType: "json",
 		   data: $("#"+formID).serialize(),
           beforeSend: function() {
+			  results.html("<code> "+PleaseWait+"</code>");
 			  if(formID=='settings_form')
 				  $("html, body").animate({ scrollTop: 0 }, "slow");
 			  

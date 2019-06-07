@@ -30,7 +30,7 @@
                 <textarea class="editor form-control" maxlength="21844" id="publicity_content" name="content" placeholder="<?php echo $lang[186] ?>..." rows="5"></textarea>
             </div>
 		<div class="form-group">
-		  <button type="submit" class="btn btn-primary btn-block" onclick="request('publicity','PublicityResults','publicity_form');"><?php echo $lang[187] ?></button>	
+		  <button id="btn_publicity" disabled type="submit" class="btn btn-primary btn-block" onclick="request('publicity','PublicityResults','publicity_form');"><?php echo $lang[187] ?></button>	
 		</div>
 </form>
 
