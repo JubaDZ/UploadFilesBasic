@@ -3,7 +3,8 @@ Last update 05/06/2019
 
 ### Google Ads ###
 
-If you want to add a commercial Ads to any page (**\modals**) , just add this code to the last line of the file 
+If you want to add a commercial Ads to any page (**\modals**) , just add this code to the last line of the file .
+
 ```<?php Get_Ads('ads_google' ) ; ?>```
 
 ### Features ###
