@@ -134,3 +134,4 @@ unset($userId);
     </tbody>
   </table>
  </div>
+ <?php Get_Ads('ads_google' ) ; ?>
