@@ -86,7 +86,6 @@ if(isGet('stats'))
 	$nb_referrer           = num_rows(Sql_query("SELECT distinct(`referrer`) FROM `stats` WHERE `file_id` = '$id' AND `referrer` <> ''")) ;//AND `referrer` <> ''
 	$nb_dates              = num_rows(Sql_query("SELECT distinct(FROM_UNIXTIME(`date`,'%Y-%m-%d')) FROM `stats` WHERE `file_id` = '$id'"));
 	
-	
 	$chart_dates_labels     =array();
 	$chart_dates_data       =array();
 	
@@ -138,12 +137,12 @@ if(isGet('stats'))
 	}
     	
 	
-	$result = Sql_query("SELECT distinct(`referrer`), count(`referrer`) as `nb_referrer` FROM `stats` WHERE `file_id` = '$id' AND `referrer` <> '' GROUP BY `referrer` ORDER BY `nb_referrer` DESC LIMIT $offset, ".rowsperpage) ; 
+	$result = Sql_query("SELECT distinct(`referrer`), (SELECT count(`referrer`) FROM `stats` WHERE `file_id` = '$id' AND `referrer` <> '') as _total , count(`referrer`) as `nb_referrer` FROM `stats` WHERE `file_id` = '$id' AND `referrer` <> '' GROUP BY `referrer` ORDER BY `nb_referrer` DESC LIMIT $offset, ".rowsperpage) ; 
 	while ($data = mysqli_fetch_array($result)) if($data['referrer']!=='')
 	{
 			$chart_referrers_labels[] =GetUrlHost($data['referrer']);
 			$chart_referrers_data[]   =$data['nb_referrer']; 
-			if(!isGet('api')) $referrers.= '<tr><td><a target="_blank" href="'.html_decoder($data['referrer']).'">'.html_decoder($data['referrer']).'</a></td> <td><code>'.$data['nb_referrer'].'</code></td><td>'.percent($data['nb_referrer']/$nb_total).'</td></tr>';
+			if(!isGet('api')) $referrers.= '<tr><td><a target="_blank" href="'.html_decoder($data['referrer']).'">'.html_decoder($data['referrer']).'</a></td> <td><code>'.$data['nb_referrer'].'</code></td><td>'.percent($data['nb_referrer']/$data['_total']).'</td></tr>';
 	}
     	
 	
