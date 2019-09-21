@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 /**
 * Simple Ajax Uploader
-* Version 2.6.2
+* Version 2.6.6
 * https://github.com/LPology/Simple-Ajax-Uploader
 *
-* Copyright 2012-2017 LPology, LLC
+* Copyright 2012-2019 LPology, LLC
 * Released under the MIT license
 *
 * Returns upload progress updates for browsers that don't support the HTML5 File API.

@@ -26,7 +26,7 @@
 					  <tr><th><?php echo $lang[199] ?></th><th><?php echo $lang[5] ?></th><th><?php echo $lang[200] ?></th></tr>
 					  <tr><td>jQuery.js</td><td>1.11.3</td><td>jQuery Foundation, Inc</td></tr>
 					  <tr><td>Chart.js</td><td>2.7.2</td><td>Nick Downie</td></tr>
-					  <tr><td>Simple Ajax Uploader.js</td><td>2.6.2</td><td>LPology, LLC</td></tr>
+					  <tr><td>Simple Ajax Uploader.js</td><td>2.6.7</td><td>LPology, LLC</td></tr>
 					  <tr><td>bootpag.js</td><td>1.0.7</td><td>botmonster@7items.com</td></tr>
 					  <tr><td>Summernote.js</td><td>0.8.2</td><td>Alan Hong</td></tr>
 					  <tr><td>Bootstrap.js</td><td>3.3.7</td><td>Twitter, Inc</td></tr>
