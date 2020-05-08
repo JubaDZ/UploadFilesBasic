@@ -6,16 +6,22 @@
 //$DownloadID    = protect(Decrypt($_GET['download']));
 //$info  = Sql_Get_info($DownloadID);
 //$DownloadID   = (is_numeric($_GET['download'])) ? (int)$_GET['download'] : protect(Decrypt($_GET['download']));
-$_crypt_id  = "'".Encrypt($DownloadID)."'";
-$Continue   = false;
-$confirm  = (isGet('confirm')) ? true : false ;
-$notfound = (isGet('notfound')) ? true : false ;
-$referrer = (isset($_SERVER['HTTP_REFERER'])) ? Encrypt($_SERVER['HTTP_REFERER']) : "";
-$string   = (!isset($_SESSION['settings']['files'][$DownloadID])) ? GenerateRandomString() : $_SESSION['settings']['files'][$DownloadID];
-(!isset($_SESSION['settings']['files'][$DownloadID])) ? $_SESSION['settings']['files'][$DownloadID]	= $string : '';
-			
-//print_r($info);
+$_crypt_id    = "'".Encrypt($DownloadID)."'";
+$Continue     = false;
+$secondInt    = 0;
+$confirm      = (isGet('confirm')) ? true : false ;
+$notfound     = (isGet('notfound')) ? true : false ;
+$referrer     = (isset($_SERVER['HTTP_REFERER'])) ? Encrypt($_SERVER['HTTP_REFERER']) : "";
+$string       = (!isset($_SESSION['settings']['files'][$DownloadID])) ? GenerateRandomString() : $_SESSION['settings']['files'][$DownloadID];
+$timeNextFile = (!isset($_SESSION['settings']['timeNextFile'][$DownloadID])) ? (timestamp()+$secondInt) : $_SESSION['settings']['timeNextFile'][$DownloadID];
 
+(!isset($_SESSION['settings']['files'][$DownloadID]))        ? $_SESSION['settings']['files'][$DownloadID]	= $string : '';
+(!isset($_SESSION['settings']['timeNextFile'][$DownloadID])) ? $_SESSION['settings']['timeNextFile'][$DownloadID] = $timeNextFile : '';
+
+$diffTime     = $_SESSION['settings']['timeNextFile'][$DownloadID] - timestamp();		
+
+//print_r($info);
+     
 if(!empty($info['password']))
 {
 	if(isset($_SESSION['settings']['passwordfiles'][$DownloadID]))
@@ -35,7 +41,10 @@ elseif(!$info['status'])
 
 elseif(!$info['public'] && ((int)UserID !== (int)$info['user_id']) )
      ShowMessage($lang[177],true);
-	
+	 
+elseif ($diffTime>0)
+     ShowMessage('<span id="DivdiffTime">'.$lang[296].' <code id="time">'.$diffTime.'</code> '.$lang[216].' '.$lang[297].'</span>',true);	 
+	 
 /*elseif(!IsLogin)
      echo '<tr><td colspan="2" class="active"><h2><i class="glyphicon glyphicon-question-sign"></i> '.$lang[49].'.</h2></td></tr>';	*/
 	 
@@ -44,6 +53,7 @@ elseif(!$Continue)
 		
 elseif (!$info["isfile"])
 	 ShowMessage($lang[46],true);
+
 	
 
 else

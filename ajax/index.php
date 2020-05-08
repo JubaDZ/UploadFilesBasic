@@ -239,6 +239,14 @@ $FolderUploadId  = FolderUploadId;
 ((IsLogin) && (UserSpaceLeft<=0))   ? IePrintArray(array('success' => false, 'msg' => $lang[173].' / '.$lang[117] ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) : '' ;  
 
 
+if (in_array($ext , array('png' , 'jpg' ,'jpeg' , 'gif', 'bmp' ,'jpeg' , 'ico')) && function_exists('getimagesize')) 
+{
+	//{if !(is_image($Upload->Temporaryfile)) $_FILES['uploadfile']['tmp_name'])
+  //if(!is_array(getimagesize($Upload->Temporaryfile)))
+	if (!is_image($Upload->Temporaryfile))  
+	   IePrintArray(array('success' => false, 'msg' => $lang[127]  ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  	
+}	
+
 //if(Sql_file_exists($_UploadFileName))
 	if(file_exists('..'. uploadDir.'/'.$_UploadFileName))
 	{
@@ -250,8 +258,12 @@ $Upload->Language    = $lang;
 $Upload->sizeLimit   = MaxFileSize;
 $Upload->newFileName = $_UploadFileName ; /*_Upload_name().$ext;*/
 
+
 if($Upload->getFileSize()>=MaxFileSize) 
 	IePrintArray(array('success' => false, 'msg' => $lang[110] .' : '.FileSizeConvert(MaxFileSize) ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ; 
+	
+	
+
  
 $result = $Upload->handleUpload('..'.uploadDir, $extensions);
 
@@ -672,8 +684,8 @@ if ($result=Sql_query($sql))
 	  $_deleteHash       = "'".$row["deleteHash"]."'";
 	  $folder            = Sql_Get_folder($row['folderId']);
 	  $org_filename      = (enable_orgFilename) ? $row["originalFilename"] : $row["filename"] ;
-	  $_thumbnaildir     = (ext_is_image('..'.$folder.'/'.$row["filename"]) && file_exists('..'.$folder.'/_thumbnail/'.get_thumbnail($row["filename"]))) ? ($folder.'/_thumbnail/'.get_thumbnail($row["filename"])):'';
-	   
+//	  $_thumbnaildir     = (ext_is_image('..'.$folder.'/'.$row["filename"]) && file_exists('..'.$folder.'/_thumbnail/'.get_thumbnail($row["filename"]))) ? ($folder.'/_thumbnail/'.get_thumbnail($row["filename"])):'';
+	  $_thumbnaildir     = (is_image('..'.$folder.'/'.$row["filename"]) && file_exists('..'.$folder.'/_thumbnail/'.get_thumbnail($row["filename"]))) ? ($folder.'/_thumbnail/'.get_thumbnail($row["filename"])):''; 
 	  $css    = (empty($row["accessPassword"]))                          ? ' text-muted' : '' ;
 	  $dcss   = ($row["totalDownload"]==0)                               ? ' text-muted' : '' ;
 	  $onclick= (($row["totalDownload"]==0) && (IsAdmin || statistics))  ? '' : 'StatsFile('.$_file_id.','.$_originalFilename.')';

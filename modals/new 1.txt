@@ -1,0 +1,20 @@
+		
+		<!--
+		
+		<div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapsegoogle"><i class="glyphicon glyphicon-pushpin"> </i> <?php echo $lang[183]?> </a>
+            </h4>
+          </div>
+          <div id="collapsegoogle" class="panel-collapse collapse in">
+		   <div class="panel-body">
+		      <div id="StatsPanel" class=" <?php echo ClassAnimated ?> swing">   
+			  <?php Get_Ads('ads_google' ) ; ?>
+		      </div>  
+		   </div>
+		     
+          </div>
+        </div>
+		
+		-->

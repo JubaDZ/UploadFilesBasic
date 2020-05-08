@@ -1091,7 +1091,8 @@ if(num_rows($sql)>0) {
 	$row = mysqli_fetch_array($sql);
 	$_fileName_= (enable_orgFilename) ? "'".$row["originalFilename"]."'" : "'".$row["filename"]."'";
 	$folder    = Sql_Get_folder($row['folderId']);
-	$thumbnail = (file_exists('../..'. $folder .'/_thumbnail/'. get_thumbnail($row['filename'])) && ext_is_image('../..'.$folder.'/'.$row["filename"]) ) ? $folder .'/_thumbnail/'. get_thumbnail($row['filename']) : '';
+//	$thumbnail = (file_exists('../..'. $folder .'/_thumbnail/'. get_thumbnail($row['filename'])) && ext_is_image('../..'.$folder.'/'.$row["filename"]) ) ? $folder .'/_thumbnail/'. get_thumbnail($row['filename']) : '';
+    $thumbnail = (file_exists('../..'. $folder .'/_thumbnail/'. get_thumbnail($row['filename'])) && is_image('../..'.$folder.'/'.$row["filename"]) ) ? $folder .'/_thumbnail/'. get_thumbnail($row['filename']) : '';
     $ext       = strtolower(pathinfo($row["filename"], PATHINFO_EXTENSION));
 	$data['_filename']   = (!is_file('../..'.$folder.'/'.$row["filename"]) ) ? icon($row["filename"]).' '.$lang[46] : icon($row["filename"]).' '.$row["originalFilename"];
 	$data['_thumbnail']  = ($thumbnail =='' ) ? '' : $folder .'/_thumbnail/'. get_thumbnail($row['filename']) ;

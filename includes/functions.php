@@ -13,6 +13,7 @@ if( !function_exists('json_decode') ) {
         return( $json->decode($data) );
     }
 }
+
 function extract_json_from_string($text)
 { 
 return preg_replace('~\{(?:[^{}]|(?R))*\}~', '', $text);
@@ -1539,7 +1540,8 @@ if(num_rows($qry)>0)
     {
 	$row            = mysqli_fetch_assoc($qry);	
 	$folder         = Sql_Get_folder($row['folderId']) ;
-	$thumbnail      = ((file_exists($directory.$folder.'/'.$row["filename"])) && (ext_is_image($directory.$folder.'/'.$row["filename"]))) ? true : false ;
+//	$thumbnail      = ((file_exists($directory.$folder.'/'.$row["filename"])) && (ext_is_image($directory.$folder.'/'.$row["filename"]))) ? true : false ;
+    $thumbnail      = ((file_exists($directory.$folder.'/'.$row["filename"])) && (is_image($directory.$folder.'/'.$row["filename"]))) ? true : false ;
 	$thumbnail_dir	= $thumbnail ? $folder .'/_thumbnail/'. get_thumbnail($row['filename']) : '';
 	$thumbnail_dir	= file_exists($directory.$thumbnail_dir) ? $thumbnail_dir : '' ;
 	$thumbnail	    = empty($thumbnail_dir) ? false : true ;
@@ -2163,6 +2165,43 @@ function ext_is_image( $filename )
 	return (in_array($ext , array('png' , 'jpg' ,'jpeg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) ? true : false;
 }
 
+
+
+function Delete_temporary_files($Folder  = 'temp/')
+{
+// Define the folder to clean
+// (keep trailing slashes)
+// Filetypes to check (you can also use *.*)
+$fileTypes      = '*.*';
+ 
+// Here you can define after how many
+// minutes the files should get deleted
+$expire_time    = 20; 
+ 
+// Find all files of the given file type
+foreach (glob($Folder . $fileTypes) as $Filename) {
+ 
+    // Read file creation time
+    $FileCreationTime = filectime($Filename);
+ 
+    // Calculate file age in seconds
+    $FileAge = time() - $FileCreationTime; 
+ 
+    // Is the file older than the given time span?
+    if ($FileAge > ($expire_time * 60)){
+ 
+        // Now do something with the olders files...
+ 
+        print "The file $Filename is older than $expire_time minutes\n";
+ 
+        // For example deleting files:
+        //unlink($Filename);
+    }
+ 
+}
+}
+
+
 function is_image( $filename )
 {
 		
@@ -2210,7 +2249,8 @@ $file  = (!file_exists($file)) ?  './assets/css/images/notfound.png' : $file;
 $file  = ($info['status'] && (!$info['public']) && ($info['user_id']!==UserID))  ?  './assets/css/images/notpublic.png' : $file;
 $file  = ($info['status'] && ($info['password']!==''))  ?  './assets/css/images/accesspassword.png' : $file;
 
-if(!ext_is_image($file)) return ;
+//if(!ext_is_image($file)) return ;
+if(!is_image($file)) return ;
 
 $referrer = isGet('referrer') &&  !empty($_GET['referrer']) ? protect(Decrypt($_GET['referrer'])) : '' ;
 

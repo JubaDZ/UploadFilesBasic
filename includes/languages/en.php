@@ -297,4 +297,7 @@ $lang[292] =  'File Downloads';
 $lang[293] =  'Unknown';
 $lang[294] =  'User files';
 $lang[295] =  'This user does not exist';
+$lang[296] =  'You have to wait';
+$lang[297] =  'till next download';
+
 ?>

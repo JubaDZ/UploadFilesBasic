@@ -21,6 +21,7 @@ class FileUpload {
     private $savedFile;                   // Path to newly uploaded file (after upload completed)
     private $errorMsg;                    // Error message if handleUpload() returns false (use getErrorMsg() to retrieve)
     private $isXhr;
+	public $Temporaryfile;                // Temporary file name
     public $uploadDir;                    // File upload directory (include trailing slash)
     public $allowedExtensions;            // Array of permitted file extensions
     public $sizeLimit = 10485760;         // Max file upload size in bytes (default 10MB)
@@ -40,6 +41,7 @@ class FileUpload {
             if ($_FILES[$this->uploadName]['error'] === UPLOAD_ERR_OK) {
                 $this->fileName = $_FILES[$this->uploadName]['name'];
                 //$this->fileSize = $_FILES[$this->uploadName]['size'];
+				$this->Temporaryfile = $_FILES[$this->uploadName]["tmp_name"] ;
 				$this->fileSize = filesize($_FILES[$this->uploadName]["tmp_name"]);
 				$this->fileSize = $this->fileSize >= 0 ? $this->fileSize : 4*1024*1024*1024 + $this->fileSize;
 
