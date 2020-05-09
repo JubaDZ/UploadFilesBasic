@@ -239,10 +239,8 @@ $FolderUploadId  = FolderUploadId;
 ((IsLogin) && (UserSpaceLeft<=0))   ? IePrintArray(array('success' => false, 'msg' => $lang[173].' / '.$lang[117] ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) : '' ;  
 
 
-if (in_array($ext , array('png' , 'jpg' ,'jpeg' , 'gif', 'bmp' ,'jpeg' , 'ico')) && function_exists('getimagesize')) 
+if (in_array($ext , array('png' , 'jpg' ,'jpeg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) 
 {
-	//{if !(is_image($Upload->Temporaryfile)) $_FILES['uploadfile']['tmp_name'])
-  //if(!is_array(getimagesize($Upload->Temporaryfile)))
 	if (!is_image($Upload->Temporaryfile))  
 	   IePrintArray(array('success' => false, 'msg' => $lang[127]  ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  	
 }	

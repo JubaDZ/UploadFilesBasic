@@ -1050,13 +1050,13 @@ function num_rows($query)
 
 function fetch_assoc($query,$data)
 { 
-$var= mysqli_fetch_assoc($query); 
+$var= @mysqli_fetch_assoc($query); 
 return $var[$data] ;               		 
 }
  
  function fetch_row($query,$data)
 { 
-$var= mysqli_fetch_row($query); 
+$var= @mysqli_fetch_row($query); 
 return $var[$data] ;               		 
 }
  
