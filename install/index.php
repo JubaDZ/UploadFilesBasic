@@ -823,7 +823,11 @@ $.ajax({
       <span class="input-group-addon"><?php echo $lang[70] ?></span>
        <select onchange="SelectStyleSheet(this);" name="theme" class="selectpicker" data-live-search="true"  data-width="100%"  title="<?php echo $lang[70] ?>">
 	    <option value="<?php echo str_replace(".min.css","",theme)  ?>" selected><?php echo str_replace(".min.css","",theme)  ?></option>
-		<?php for($i=0;$i<count(ListStyles());$i++) echo '<option value="'.ListStyles()[$i].'">'.ListStyles()[$i].'</option>';?>
+			<?php 
+		    $lists=ListStyles(); 
+		    for($i=0; $i<count($lists); $i++) 
+				echo '<option value="'.$lists[$i].'">'.$lists[$i].'</option>';
+			?>
       </select>
     </div>
 	
