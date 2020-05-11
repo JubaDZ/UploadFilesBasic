@@ -1408,14 +1408,20 @@ function get_date_Strings($index,$diff,$strings,$string)
 	} else return $strings[$index];						
 }
 
+
+
 function time_elapsed_string($datetime, $full = false) {
 	global $lang;
-    $now = new DateTime;
-    $ago = new DateTime($datetime);
-    $diff = $now->diff($ago);
+	
+  $now = new DateTime;
+    $then = new DateTime( $datetime );
+    $diff = (array) $now->diff( $then );
 
-    $diff->w = floor($diff->d / 7);
-    $diff->d -= $diff->w * 7;
+    $diff['w']  = floor( $diff['d'] / 7 );
+    $diff['d'] -= $diff['w'] * 7;
+
+ $diff['w']  = floor( $diff['d'] / 7 );
+    $diff['d'] -= $diff['w'] * 7;
 	
 	    $date_string = array(
         'y' => $lang[210],
@@ -1436,10 +1442,10 @@ function time_elapsed_string($datetime, $full = false) {
         'i' => $lang[224],
         's' => $lang[225]);
 		
-			
+	
     foreach ($date_string as $index => &$v) {
-        if ($diff->$index) {
-            $v = $diff->$index . ' ' . ($diff->$index > 1 ? get_date_Strings($index,$diff->$index,$date_strings,$date_string) : $v);
+        if ($diff[$index]) {
+            $v = $diff[$index] . ' ' . ($diff[$index] > 1 ? get_date_Strings($index,$diff[$index],$date_strings,$date_string) : $v);
 			
         } else {
             unset($date_string[$index]);
