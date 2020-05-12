@@ -43,7 +43,7 @@ elseif(!$info['public'] && ((int)UserID !== (int)$info['user_id']) )
      ShowMessage($lang[177],true);
 	 
 elseif ($diffTime>0)
-     ShowMessage('<span id="DivdiffTime">'.$lang[296].' <code id="time">'.$diffTime.'</code> '.$lang[216].' '.$lang[297].'</span>',true);	 
+     ShowMessage('<span id="DivdiffTime">'.$lang[296].' <code id="diffTime">'.$diffTime.'</code> '.$lang[216].' '.$lang[297].'</span>',true);	 
 	 
 /*elseif(!IsLogin)
      echo '<tr><td colspan="2" class="active"><h2><i class="glyphicon glyphicon-question-sign"></i> '.$lang[49].'.</h2></td></tr>';	*/

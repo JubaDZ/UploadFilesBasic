@@ -1,6 +1,6 @@
 <?php
 $supportedLangs  = array('ar','en','') ;
-
+$uselessFiles    = array('README.md','index.png','index1.png','index2.png','index3.png','.gitignore') ;
 define('sitename','File Sharing and Storage'); // موقعي للرفع
 define('rtlsitename','مشاركة وتخزين الملفات');
 define('sitemail','');
@@ -21,7 +21,7 @@ define('scriptversion','0.9.7');
 define('authorized','0');	
 define('terms','');	
 define('privacy','');
-define('directdownload','0');
+define('directdownload','1');
 define('statistics','1');
 define('userspacemax','500M');
 define('speed','0');

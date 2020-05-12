@@ -492,7 +492,7 @@ elseif(num_rows($sql)>0) {
 		$_SESSION['login']['user_space_used'] = (int)Get_user_space_used($row['id']) ;
 		$_SESSION['login']['user_space_left'] = user_space_max-(int)$_SESSION['login']['user_space_used'];
 		
-		(session_status() == PHP_SESSION_ACTIVE) ? session_regenerate_id() : '';
+		( is_session_started()=== true ) ? session_regenerate_id() : '';
 /*
 		if(enable_userfolder)
 		{

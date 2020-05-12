@@ -393,7 +393,8 @@ $_SESSION['login']['last_ip']    = $ip;
 
 $_SESSION['login']['user_space_used'] = 0 ;
 $_SESSION['login']['user_space_left'] = user_space_max;
-(session_status() == PHP_SESSION_ACTIVE) ? session_regenerate_id() : '';
+//(session_status() == PHP_SESSION_ACTIVE) ? session_regenerate_id() : '';
+( is_session_started()=== true ) ? session_regenerate_id() : '';
 
 }
 
@@ -485,6 +486,10 @@ WriteHtaccessUploadFolder('..'.$folderupload,!$directdownload);
 unlink('../install/ini.php');
 unlink('../install/index.php' );*/	
 @unlinkRecursive('../install',true);
+
+for($i=0; $i<count($uselessFiles); $i++) 
+	unlink('../'.$uselessFiles[$i]);
+
 PrintArray(array('settings'=>'general','success_msg' => $lang[104] , 'admincp' => siteurl.'/admin' , 'username' => $username ));
 }
 else
@@ -823,7 +828,11 @@ $.ajax({
       <span class="input-group-addon"><?php echo $lang[70] ?></span>
        <select onchange="SelectStyleSheet(this);" name="theme" class="selectpicker" data-live-search="true"  data-width="100%"  title="<?php echo $lang[70] ?>">
 	    <option value="<?php echo str_replace(".min.css","",theme)  ?>" selected><?php echo str_replace(".min.css","",theme)  ?></option>
-		<?php for($i=0;$i<count(ListStyles());$i++) echo '<option value="'.ListStyles()[$i].'">'.ListStyles()[$i].'</option>';?>
+		<?php 
+		    $lists=ListStyles(); 
+		    for($i=0; $i<count($lists); $i++) 
+				echo '<option value="'.$lists[$i].'">'.$lists[$i].'</option>';
+		?>
       </select>
     </div>
 	

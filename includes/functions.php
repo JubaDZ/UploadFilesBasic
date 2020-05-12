@@ -61,6 +61,18 @@ function split_text($string, $nb_caracs, $separator='...'){
     return (strlen($string) > $nb_caracs) ? substr($string, 0, $nb_caracs ).$separator : $string;
 }
 
+function is_session_started()
+{
+    if ( php_sapi_name() !== 'cli' ) {
+        if ( version_compare(phpversion(), '5.4.0', '>=') ) {
+            return session_status() === PHP_SESSION_ACTIVE ? TRUE : FALSE;
+        } else {
+            return session_id() === '' ? FALSE : TRUE;
+        }
+    }
+    return FALSE;
+}
+
 /******[Get Main Domain URL Name - Start]******/
 
 function Get_Domain($url)
@@ -1410,12 +1422,16 @@ function get_date_Strings($index,$diff,$strings,$string)
 
 function time_elapsed_string($datetime, $full = false) {
 	global $lang;
-    $now = new DateTime;
-    $ago = new DateTime($datetime);
-    $diff = $now->diff($ago);
+	
+  $now = new DateTime;
+    $then = new DateTime( $datetime );
+    $diff = (array) $now->diff( $then );
 
-    $diff->w = floor($diff->d / 7);
-    $diff->d -= $diff->w * 7;
+    $diff['w']  = floor( $diff['d'] / 7 );
+    $diff['d'] -= $diff['w'] * 7;
+
+ $diff['w']  = floor( $diff['d'] / 7 );
+    $diff['d'] -= $diff['w'] * 7;
 	
 	    $date_string = array(
         'y' => $lang[210],
@@ -1436,10 +1452,10 @@ function time_elapsed_string($datetime, $full = false) {
         'i' => $lang[224],
         's' => $lang[225]);
 		
-			
+	
     foreach ($date_string as $index => &$v) {
-        if ($diff->$index) {
-            $v = $diff->$index . ' ' . ($diff->$index > 1 ? get_date_Strings($index,$diff->$index,$date_strings,$date_string) : $v);
+        if ($diff[$index]) {
+            $v = $diff[$index] . ' ' . ($diff[$index] > 1 ? get_date_Strings($index,$diff[$index],$date_strings,$date_string) : $v);
 			
         } else {
             unset($date_string[$index]);
