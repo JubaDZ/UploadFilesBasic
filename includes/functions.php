@@ -2176,8 +2176,7 @@ else return array('status'=>false,'html'=> '<div class="alert alert-danger" ><st
 /***************************************************/
 function ext_is_image( $filename )
 {
-	$filename = basename($filename) ;
-	$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+	$ext = strtolower(pathinfo(basename($filename), PATHINFO_EXTENSION));
 	return (in_array($ext , array('png' , 'jpg' ,'jpeg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) ? true : false;
 }
 
@@ -2243,16 +2242,81 @@ function is_image( $filename )
     return (in_array($image_type , array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) ? true : false ;
 }
 
-function get_mime_types($filename)
-{
-	$filename = basename($filename) ;
-	if ( function_exists ( 'mime_content_type ' ) ) return mime_content_type($filename);
-	$ext      = '.'.strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-	require_once('libraries/mimetypes.php');
-	return  (array_key_exists($ext , $mime_types)) ? ($mime_types[$ext]) : '' ;
+
+
+
+//******************************************************
+function get_mime_type_by_ext($ext) // array
+{ 
+	require_once('libraries/mime.types.php');
+	
+	if (isset($mime_types['mimes'][$ext])) 
+            return $mime_types['mimes'][$ext];
+		else
+			return array();
 }
 
+function get_mime_type_by_header($filename)
+{ 
+   $result='';
+   
+  if (function_exists('mime_content_type'))
+     {
+        $result = @mime_content_type($filename);
+     }
+     elseif (function_exists('finfo_open')) 
+     {
+        $finfo  = finfo_open(FILEINFO_MIME_TYPE);
+		if ($finfo)
+           $result = finfo_file($finfo, $filename);
+        finfo_close($finfo);
+     }
+	 
+	 return $result;
+}
 
+function get_mime_type($filename)
+{
+	global $mime_types;
+	//if ( function_exists ( 'mime_content_type ' ) ) return @mime_content_type(basename($filename));
+	$mime_type_by_header = get_mime_type_by_header($filename) ;
+	if (! empty($mime_type_by_header)) return get_mime_type_by_header($filename) ;
+	$ext      = strtolower(pathinfo(basename($filename), PATHINFO_EXTENSION));
+	require_once('libraries/mime.types.php');
+	return  (array_key_exists($ext , $mime_types['mimes'])) ? ($mime_types['mimes'][$ext][0]) : '' ;
+}
+
+function is_safe($tmpfile,$ext)
+{
+		
+   $mime_by_header = get_mime_type_by_header($tmpfile);//string
+   $mime_by_ext    = get_mime_type_by_ext($ext) ; //array 
+    if (! empty($mime_by_header))
+        return ( in_array($mime_by_header,$mime_by_ext ) ) ? true : false;
+    
+		
+    /* From Kleeja */
+    if (@filesize($tmpfile) > 6*(1000*1024))
+        return true;
+    
+    $bad_codes = ['<script', 'zend', 'base64_decode', '<?php', '<?='];
+	
+
+    if (! ($data = @file_get_contents($tmpfile)))
+        return true;
+    
+
+
+    foreach ($bad_codes as $word)
+    {
+        if (strpos(strtolower($data), $word) !== false)  
+            return false;
+        
+    }
+
+    return true;
+}
+//*********************************************************************
 function forceView($id)
 {	
 @ini_set('memory_limit', '32M'); //max size 32m
@@ -2281,7 +2345,7 @@ if (file_exists($file))
     $fp = fopen($file, 'rb');
     if (($size>0) and $fp)
     {
-        header('Content-Type: '.get_mime_types($file));
+        header('Content-Type: '.get_mime_type($file));
         header('Content-Length: '.$size);
         while(!feof($fp) and (connection_status()==0)) {
               //reset time limit for big files

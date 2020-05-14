@@ -228,7 +228,6 @@ $Upload          = new FileUpload('uploadfile');
 $ext             = $Upload->getExtension(); // Get the extension of the uploaded file
 $_UploadFileName = _Upload_name().$ext;
 $extensions      = explode(",",extensions);
-/*(isset($_FILES["uploadfile"]["name"])) ? protect(basename($_FILES["uploadfile"]["name"])) : '';*/
 $orgfilename     = protect($Upload->getFileName()); 
 $passwordfile    = (isPost('passwordfile')) ? protect($_POST['passwordfile']) : '';
 $code            = (isPost('code')) ? protect($_POST['code']) : '' ;
@@ -242,8 +241,11 @@ $FolderUploadId  = FolderUploadId;
 if (in_array($ext , array('png' , 'jpg' ,'jpeg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) 
 {
 	if (!is_image($Upload->Temporaryfile))  
-	   IePrintArray(array('success' => false, 'msg' => $lang[127]  ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  	
+	   IePrintArray(array('success' => false, 'msg' => $lang[299].' - '.$orgfilename   ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  	
 }	
+
+if (!is_safe($Upload->Temporaryfile,$ext)) 
+	IePrintArray(array('success' => false, 'msg' => $lang[298].' - '.$orgfilename  ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  
 
 //if(Sql_file_exists($_UploadFileName))
 	if(file_exists('..'. uploadDir.'/'.$_UploadFileName))

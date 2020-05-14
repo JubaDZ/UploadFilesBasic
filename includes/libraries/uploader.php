@@ -39,7 +39,7 @@ class FileUpload {
             $this->isXhr = false;
 
             if ($_FILES[$this->uploadName]['error'] === UPLOAD_ERR_OK) {
-                $this->fileName = $_FILES[$this->uploadName]['name'];
+                $this->fileName = $_FILES[$this->uploadName]['name'];		
                 //$this->fileSize = $_FILES[$this->uploadName]['size'];
 				$this->Temporaryfile = $_FILES[$this->uploadName]["tmp_name"] ;
 				$this->fileSize = filesize($_FILES[$this->uploadName]["tmp_name"]);

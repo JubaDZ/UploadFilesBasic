@@ -299,5 +299,6 @@ $lang[294] =  'User files';
 $lang[295] =  'This user does not exist';
 $lang[296] =  'You have to wait';
 $lang[297] =  'till next download';
-
+$lang[298] =  'File is not safe';
+$lang[299] =  'File is not an image';
 ?>
