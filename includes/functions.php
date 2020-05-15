@@ -2299,7 +2299,7 @@ function is_safe($tmpfile,$ext)
     if (@filesize($tmpfile) > 6*(1000*1024))
         return true;
     
-    $bad_codes = ['<script', 'zend', 'base64_decode', '<?php', '<?='];
+    $bad_codes = array('<script', 'zend', 'base64_decode', '<?php', '<?=');
 	
 
     if (! ($data = @file_get_contents($tmpfile)))
