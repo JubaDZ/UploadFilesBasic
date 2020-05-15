@@ -462,7 +462,7 @@ if (typeof(FilesTotal)==='undefined') FilesTotal = 1;
 		$('#fileInfo_ip').html('<a href="javascript:void(0)" onclick="ShowIpInfos('+"'"+data._ip+"'"+')">'+data._ip+'</a>');
 		$('#fileInfo_delete').html('<i class="glyphicon glyphicon-remove text-muted"></i> '+data._delete);	
 		$('#fileInfo_reportcount').html(data._report);
-		$('#fileInfo_updateurl').html('<i class="glyphicon glyphicon-cloud-upload text-muted"></i> <a href="javascript:void(0)" onclick="updateFile('+_filename_+');" ><?php echo $lang[79] ?></a>');
+		$('#fileInfo_updateurl').html('<i class="glyphicon glyphicon-cloud-upload text-muted"></i> <a href="javascript:void(0)" onclick="updateFile('+"'"+data._file+"'"+');" ><?php echo $lang[79] ?></a>');
 		$('#fileInfo_urldownload').html('<i class="glyphicon glyphicon-download-alt text-muted"></i> <a href="../?download='+cryptid+'" target="_blank"><?php echo $lang[184] ?></a>');	
 		
 		if(IsDirect)

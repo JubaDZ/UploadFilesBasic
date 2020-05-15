@@ -830,7 +830,7 @@ if ($result=Sql_query($sql))
 				<td>
 				 <a href="javascript:void(0)" onclick="deleteFile('.$_file_id.','."'".$row["deleteHash"]."'".','.$currentpage.','. $_fileName_.')"><span class="glyphicon glyphicon-trash"></span></a> 
 				<!-- <a href="javascript:void(0)"><span class="glyphicon glyphicon-pencil text-muted"></span></a> -->
-				 <a href="javascript:void(0)" onclick="updateFile('.$_fileName_.')" ><span class="glyphicon glyphicon-cloud-upload"></span></a>
+				 <a href="javascript:void(0)" onclick="updateFile('."'".$row["filename"]."'".')" ><span class="glyphicon glyphicon-cloud-upload"></span></a>
 				</td>
 				</tr>';
   }
