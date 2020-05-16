@@ -2223,7 +2223,7 @@ function is_image( $filename )
 	if (!file_exists( $filename )) 
 		return false ;
 	
-	if (filesize( $filename )>33554432) /*32MB*/
+	if (filesize( $filename )>32*(1048576)) /*32MB*/
 		return false ;
 		
 	if(function_exists('getimagesize'))
@@ -2301,11 +2301,11 @@ function is_safe($tmpfile,$ext)
         return ( in_array($mime_by_header,$mime_by_ext ) ) ? true : false;
     
 		
-    /* From Kleeja */
-    if (@filesize($tmpfile) > 5*(1000*1024)) //|| (@filesize($tmpfile) = 0)) 5MB
+  
+    if (@filesize($tmpfile) > 5*(1048576)) //|| (@filesize($tmpfile) = 0)) 5MB
         return true;
     
-    $bad_codes = array('<script', 'zend', 'base64_decode', '<?php', '<?=');
+    $_Obscure_string = array('<script','eval' ,'zend', 'base64_decode', '<?php', '<?=');
 	
 
     if (! ($contents = @file_get_contents($tmpfile)))
@@ -2313,7 +2313,7 @@ function is_safe($tmpfile,$ext)
     
 
 
-    foreach ($bad_codes as $word)
+    foreach ($_Obscure_string as $word)
     {
         if (strpos(strtolower($contents), $word) !== false) 
 		{
