@@ -2280,10 +2280,16 @@ function get_mime_type($filename)
 	global $mime_types;
 	//if ( function_exists ( 'mime_content_type ' ) ) return @mime_content_type(basename($filename));
 	$mime_type_by_header = get_mime_type_by_header($filename) ;
-	if (! empty($mime_type_by_header)) return get_mime_type_by_header($filename) ;
-	$ext      = strtolower(pathinfo(basename($filename), PATHINFO_EXTENSION));
-	require_once('libraries/mime.types.php');
-	return  (array_key_exists($ext , $mime_types['mimes'])) ? ($mime_types['mimes'][$ext][0]) : '' ;
+	if (! empty($mime_type_by_header)) 
+	{
+		return get_mime_type_by_header($filename) ;
+	}
+	else
+	{
+	    $ext    = strtolower(pathinfo(basename($filename), PATHINFO_EXTENSION));
+	    require_once('libraries/mime.types.php');
+	    return  (array_key_exists($ext , $mime_types['mimes'])) ? ($mime_types['mimes'][$ext][0]) : '' ;
+	}
 }
 
 function is_safe($tmpfile,$ext)
@@ -2296,24 +2302,24 @@ function is_safe($tmpfile,$ext)
     
 		
     /* From Kleeja */
-    if (@filesize($tmpfile) > 6*(1000*1024))
+    if (@filesize($tmpfile) > 5*(1000*1024)) //|| (@filesize($tmpfile) = 0)) 5MB
         return true;
     
-    $bad_codes = ['<script', 'zend', 'base64_decode', '<?php', '<?='];
+    $bad_codes = array('<script', 'zend', 'base64_decode', '<?php', '<?=');
 	
 
-    if (! ($data = @file_get_contents($tmpfile)))
+    if (! ($contents = @file_get_contents($tmpfile)))
         return true;
     
 
 
     foreach ($bad_codes as $word)
     {
-        if (strpos(strtolower($data), $word) !== false)  
+        if (strpos(strtolower($contents), $word) !== false)  
             return false;
         
     }
-
+    unset($contents);
     return true;
 }
 //*********************************************************************
@@ -2341,11 +2347,13 @@ $referrer = isGet('referrer') &&  !empty($_GET['referrer']) ? protect(Decrypt($_
 
 if (file_exists($file))
 {
+	$mime_type = get_mime_type($file);
+	$mime_type = (!empty($mime_type)) ? $mime_type : '';
     $size = filesize($file);
     $fp = fopen($file, 'rb');
     if (($size>0) and $fp)
     {
-        header('Content-Type: '.get_mime_type($file));
+        header('Content-Type: '.$mime_type);
         header('Content-Length: '.$size);
         while(!feof($fp) and (connection_status()==0)) {
               //reset time limit for big files
