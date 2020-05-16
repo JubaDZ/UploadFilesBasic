@@ -2315,8 +2315,11 @@ function is_safe($tmpfile,$ext)
 
     foreach ($bad_codes as $word)
     {
-        if (strpos(strtolower($contents), $word) !== false)  
+        if (strpos(strtolower($contents), $word) !== false) 
+		{
+		    unset($contents);
             return false;
+		}
         
     }
     unset($contents);
