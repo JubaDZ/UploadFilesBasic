@@ -170,8 +170,7 @@ $data['referrers'] = array('labels' => $chart_referrers_labels , 'data' => $char
 
 /*------------------------------------------------------------*/
 $data['status'] = true;
-
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data,data_format);
 
@@ -203,8 +202,8 @@ if(isGet('stats_dates'))
 	$data['labels']     = $_labels;
 	$data['data']       = $_data;
 	
-	mysqli_free_result($listFiles);
-	mysqli_free_result($result);
+	($listFiles) ? mysqli_free_result($listFiles) : '';
+	($result) ? mysqli_free_result($result) : '';
 	mysqli_close($connection);
 	
 	PrintArray($data,data_format);
@@ -225,7 +224,7 @@ Copyright 2012-2016 LPology, LLC
 */		
 $Upload          = new FileUpload('uploadfile');
 
-$ext             = $Upload->getExtension(); // Get the extension of the uploaded file
+$ext             = strtolower($Upload->getExtension()); // Get the extension of the uploaded file
 $_UploadFileName = _Upload_name().$ext;
 $extensions      = explode(",",extensions);
 $orgfilename     = protect($Upload->getFileName()); 
@@ -238,11 +237,14 @@ $FolderUploadId  = FolderUploadId;
 ((IsLogin) && (UserSpaceLeft<=0))   ? IePrintArray(array('success' => false, 'msg' => $lang[173].' / '.$lang[117] ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) : '' ;  
 
 
-if (in_array($ext , array('png' , 'jpg' ,'jpeg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) 
+if (in_array($ext , array('psd','png' , 'jpg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) 
 {
 	if (!is_image($Upload->Temporaryfile))  
 	   IePrintArray(array('success' => false, 'msg' => $lang[299].' - '.$orgfilename   ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  	
 }	
+
+ //  echo get_mime_type_by_header($Upload->Temporaryfile).'<br>';//string
+  // print_r(get_mime_type_by_ext($ext)) ; //array 
 
 if (!is_safe($Upload->Temporaryfile,$ext)) 
 	IePrintArray(array('success' => false, 'msg' => $lang[298].' - '.$orgfilename  ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  
@@ -627,7 +629,7 @@ if ($result=Sql_query($sql))
 ($total==0) ? $data['error_msg'] = $lang[111] : $data['success_msg'] = $html ;
 $data['totalpages'] = $totalpages;
 $data['currentpage'] = $currentpage;
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data,data_format);
 
@@ -744,7 +746,7 @@ if($IsJson){
 ($total==0) ? $data['success'] = false : $data['success'] = true ;
 $data['totalpages'] = $totalpages;
 $data['currentpage'] = $currentpage;
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data,data_format);
 

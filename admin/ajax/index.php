@@ -170,7 +170,7 @@ if ($result=Sql_query($sql))
 
 $data['success_msg'] = $html;
 $data['totalpages'] = $totalpages ;
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data) ;
 
@@ -375,7 +375,7 @@ if (isGet('stats'))
 	}
 	
 	
-	$result = Sql_query("SELECT distinct(`country_code`) as `_country_code_` , count(`country_code`) as `_count_` FROM `stats` GROUP BY `_country_code_` ORDER BY `_country_code_` DESC LIMIT 15");
+	$result = Sql_query("SELECT distinct(`country_code`) as `_country_code_` , count(`country_code`) as `_count_` FROM `stats` GROUP BY `_country_code_` ORDER BY `_count_` DESC ,`_country_code_` DESC LIMIT 15");
 	while ($data = mysqli_fetch_array($result))
 	{
 		$chart_countries_labels[] = $data['_country_code_'];
@@ -412,7 +412,7 @@ $data['disk_space']  = array('free'   => $disk_free_space          , 'total' => 
 /*------------------------------------------------------------*/
 $data['status'] = true;
 
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data);
 	    
@@ -490,7 +490,7 @@ if($total==0)
 
 $data['success_msg'] = $html;
 $data['totalpages'] = $totalpages ;
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data) ;
 
@@ -556,7 +556,7 @@ if ($result=Sql_query($sql))
 
 $data['success_msg'] = $html;
 $data['totalpages'] = $totalpages ;
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data) ;
 }
@@ -601,7 +601,7 @@ while($row = mysqli_fetch_assoc($result))
 				
 $data['success_msg'] = $html;
 $data['totalpages'] = 1 ;
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data) ;
 }	
@@ -672,7 +672,7 @@ if ($result=Sql_query($sql))
 
 $data['success_msg'] = $html;
 $data['totalpages'] = $totalpages ;
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data) ;
 }
@@ -734,7 +734,7 @@ if ($result=Sql_query($sql))
 
 $data['success_msg'] = $html;
 $data['totalpages'] = $totalpages ;
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data) ;
 }
@@ -840,8 +840,7 @@ if($total==0)
 
 $data['success_msg'] = $html;
 $data['totalpages'] = $totalpages ;
-if($result)
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 mysqli_close($connection);
 PrintArray($data) ;
 

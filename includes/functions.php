@@ -760,7 +760,7 @@ function ExtensionsStats()
 		$extensions_data[]   = $data['_count_']; 
 	}	
 	return array( 'extensions' => $extensions_labels , 'count' => $extensions_data );
-	mysqli_free_result($result);
+	($result) ? mysqli_free_result($result) : '';
 }
 
 function FooterInfo(){
@@ -1404,7 +1404,7 @@ if(num_rows($qry)>0)
 	else
 	return array('status' => false,
                  'name' => $name);
-mysqli_free_result($qry);
+	($qry)? mysqli_free_result($qry) : '';
 }
 
 function get_date_Strings($index,$diff,$strings,$string)
@@ -1430,8 +1430,6 @@ function time_elapsed_string($datetime, $full = false) {
     $diff['w']  = floor( $diff['d'] / 7 );
     $diff['d'] -= $diff['w'] * 7;
 
- $diff['w']  = floor( $diff['d'] / 7 );
-    $diff['d'] -= $diff['w'] * 7;
 	
 	    $date_string = array(
         'y' => $lang[210],
@@ -1545,7 +1543,7 @@ if(num_rows($qry)>0)
 	else
 	return array('status'       => false,
                  'user_id'      => 0);
-mysqli_free_result($qry);
+	($qry)? mysqli_free_result($qry) : '';
 }
 
 function Sql_Get_info($id,$directory='.')
@@ -1589,9 +1587,9 @@ if(num_rows($qry)>0)
 	} 
 	else
 	return array('status'        => false ,
-                 'isfile'        => false 
-				 );
-mysqli_free_result($qry);
+                 'isfile'        => false 	);
+				 			 
+	($qry)? mysqli_free_result($qry) : '';
 }
 
 function Sql_Update_Count_Access($id)
@@ -1690,8 +1688,7 @@ if ($result=Sql_query("SELECT `id` , `originalFilename` , `totalDownload` FROM `
 
   }} 
 
-if($result)
-mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 return $data ;
 }
 	
@@ -1854,8 +1851,16 @@ global $lang;
 
 function IsIeBrowser()
 {
-return (preg_match('/(?i)msie [5-8]/',$_SERVER['HTTP_USER_AGENT'])) ? true : false ;
+if(empty($_SERVER['HTTP_USER_AGENT'])) 
+{
+	return false;
 }
+  else
+{	
+    return (preg_match('/(?i)msie [5-8]/',$_SERVER['HTTP_USER_AGENT'])) ? true : false ;
+}
+}
+
 function translate()
 {
 global $lang;
@@ -1874,7 +1879,7 @@ while($row = mysqli_fetch_assoc($result))
 	(!defined($row['name']) && (trim($row[$planStr]) !=='')) ? define($row['name'], $row[$planStr]) : ''; 
 }
 //define('showUserfiles', fetch_assoc(Sql_query("SELECT `showfiles` FROM `users` WHERE `id`= ".UserID),'showfiles')) ;
-@mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 }
 
 function LoadBannedconfig()
@@ -1888,6 +1893,7 @@ while($row = mysqli_fetch_assoc($result))
 	(trim($row['parameter']) !== '' && !defined($row['name'].'_parameter')) ? define($row['name'].'_parameter', $row['parameter']) : ''; 
   //  echo $row['name']  .' = <code>'. $row['value'].'</code><br>';
 }
+($result) ? mysqli_free_result($result) : '';
 }
 
 
@@ -1935,7 +1941,7 @@ $_maxsize       = (defined('maxsize'))       ? return_bytes(trim(maxsize)) : -1;
 /*---------------------------------*/
 define('MaxFileSize', ($_maxsize!==-1) ? min($_maxsize ,$_maxFileSize,$_maxPostSize , $_memory_limit) : min($_maxFileSize,$_maxPostSize , $_memory_limit) );
 /*---------------------------------*/
-@mysqli_free_result($result);
+($result) ? mysqli_free_result($result) : '';
 
 }
 
@@ -2054,7 +2060,7 @@ function delete_file_older_than($isMember = false , $days=30 ,$directory='..')
 	}
 	
 	define('SuccessfullyDeleted',$successfully_deleted) ;
-	mysqli_free_result($qry);
+	($qry)? mysqli_free_result($qry) : '';
 }
 
 function delete_file_without_confirmation($id,$directory='..')
@@ -2177,44 +2183,12 @@ else return array('status'=>false,'html'=> '<div class="alert alert-danger" ><st
 function ext_is_image( $filename )
 {
 	$ext = strtolower(pathinfo(basename($filename), PATHINFO_EXTENSION));
-	return (in_array($ext , array('png' , 'jpg' ,'jpeg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) ? true : false;
+	return (in_array($ext , array('png' , 'jpg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) ? true : false;
 }
 
 
 
-function Delete_temporary_files($Folder  = 'temp/')
-{
-// Define the folder to clean
-// (keep trailing slashes)
-// Filetypes to check (you can also use *.*)
-$fileTypes      = '*.*';
- 
-// Here you can define after how many
-// minutes the files should get deleted
-$expire_time    = 20; 
- 
-// Find all files of the given file type
-foreach (glob($Folder . $fileTypes) as $Filename) {
- 
-    // Read file creation time
-    $FileCreationTime = filectime($Filename);
- 
-    // Calculate file age in seconds
-    $FileAge = time() - $FileCreationTime; 
- 
-    // Is the file older than the given time span?
-    if ($FileAge > ($expire_time * 60)){
- 
-        // Now do something with the olders files...
- 
-        print "The file $Filename is older than $expire_time minutes\n";
- 
-        // For example deleting files:
-        //unlink($Filename);
-    }
- 
-}
-}
+
 
 
 function is_image( $filename )
@@ -2225,21 +2199,31 @@ function is_image( $filename )
 	
 	if (filesize( $filename )>32*(1048576)) /*32MB*/
 		return false ;
-		
-	if(function_exists('getimagesize'))
-		$getimagesize = getimagesize( $filename );
-	else
+	
+    if(!function_exists('getimagesize') && !function_exists('exif_imagetype'))
 	{
 		$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-		return (in_array($ext , array('png' , 'jpg' ,'jpeg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) ? true : false;	
+		return (in_array($ext , array('psd','png' , 'jpg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) ? true : false;	
 	}
+	
+	if(function_exists('exif_imagetype')) 	
+		if(!exif_imagetype($filename)) 
+				return false ;
+			else
+				return true ;
+		
+	if(function_exists('getimagesize'))
+		if( $getimagesize = @getimagesize( $filename ))
+			if ( !is_array( $getimagesize ) )
+				return false ;
+			else
+				return true ;
+	
 	
 	if ( is_array( $getimagesize ) )
 		$image_type = $getimagesize[2]; 
-	else
-		return 	false ;
 	
-    return (in_array($image_type , array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) ? true : false ;
+    return (in_array($image_type , array(IMAGETYPE_PSD , IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP , IMAGETYPE_ICO))) ? true : false ;
 }
 
 
@@ -2305,7 +2289,7 @@ function is_safe($tmpfile,$ext)
     if (@filesize($tmpfile) > 5*(1048576)) //|| (@filesize($tmpfile) = 0)) 5MB
         return true;
     
-    $_Obscure_string = array('<script','eval' ,'zend', 'base64_decode', '<?php', '<?=');
+    $_Obscure_string = array('<script','eval' ,'zend','wscript','createobject','Powershell','[AppDomain]','Security.Cryptography','Net.WebClient','Reflection.Assembly' ,'Byte[]','EntryPoint','Invoke','EntryPoint.Invoke','Frombase64String','base64_decode', '<?php', '<?=');
 	
 
     if (! ($contents = @file_get_contents($tmpfile)))

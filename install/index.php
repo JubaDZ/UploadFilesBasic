@@ -292,7 +292,7 @@ if(num_rows(Sql_query("SHOW COLUMNS FROM `stats` LIKE 'country_code';"))==0)
 		while($row = mysqli_fetch_assoc($result))
 			Sql_query( "UPDATE `stats` SET `country` =  '".GetCountryCode($row['country'],'en')."' WHERE `id`= '".$row['id']."'" ) ;	
 		
-	@mysqli_free_result($result);
+	($result) ? mysqli_free_result($result) : '';
 	Sql_query("ALTER TABLE `stats` CHANGE `country` `country_code` VARCHAR(2) CHARACTER SET utf8  COLLATE utf8 _swedish_ci NOT NULL;");
 }
 
@@ -513,7 +513,7 @@ define('dbname','$host_base');
 
 define('StatsPanel',true); //false-true
 define('TotalStats',false); // home page  Require ApiStatus 
-define('OutputImage',true); //forceView
+define('OutputImage',false); //forceView
 define('EnableLogo',false);
 define('UpdateBrowser',true); // ie8=< message
 define('DirectoryChanged',false);

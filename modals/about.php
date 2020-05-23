@@ -25,15 +25,15 @@
 					<table id="" class="table table-striped">
 					  <tr><th><?php echo $lang[199] ?></th><th><?php echo $lang[5] ?></th><th><?php echo $lang[200] ?></th></tr>
 					  <tr><td>jQuery.js</td><td>1.11.3</td><td>jQuery Foundation, Inc</td></tr>
-					  <tr><td>Chart.js</td><td>2.8.0</td><td>Nick Downie</td></tr>
+					  <tr><td>Chart.js</td><td>2.9.3</td><td>Nick Downie</td></tr>
 					  <tr><td>Simple Ajax Uploader.js</td><td>2.6.7</td><td>LPology, LLC</td></tr>
 					  <tr><td>bootpag.js</td><td>1.0.7</td><td>botmonster@7items.com</td></tr>
 					  <tr><td>Summernote.js</td><td>0.8.2</td><td>Alan Hong</td></tr>
-					  <tr><td>Bootstrap.js</td><td>3.3.7</td><td>Twitter, Inc</td></tr>
+					  <tr><td>Bootstrap.js</td><td>3.4.1</td><td>Twitter, Inc</td></tr>
 					  <tr><td>Functions.js</td><td>0.9.7</td><td>onexite</td></tr>
 					  <tr><td>Bootstrap-select.js</td><td>1.13.1</td><td>caseyjhol</td></tr>
 					  <tr><td>bootstrap-checkbox.js</td><td>1.0.1</td><td>Roberto Montresor</td></tr>
-					  <tr><td>bootbox.js</td><td>5.3.0</td><td>Nick Payne</td></tr>
+					  <tr><td>bootbox.js</td><td>5.4.0</td><td>Nick Payne</td></tr>
 					  <tr><td>bootstrap-tagsinput.js</td><td>0.6.1</td><td>Tim Schlechter</td></tr>
 					  <tr><td>bootstrap-maxlength.js</td><td>1.7.0</td><td>mimo84</td></tr>
 					  <tr><td>Respond.js</td><td>1.4.2</td><td>Scott Jehl</td></tr>
@@ -44,7 +44,7 @@
 					  <tr><td>sticky.js</td><td>1.2.0</td><td>Anthony Garand</td></tr>
 					  <tr><td>hi-base64.js</td><td>0.2.0</td><td>emn178@gmail.com</td></tr>
 					  <tr><td>HTML5 Shiv.js</td><td>3.7.3</td><td>@afarkas @jdalton @jon_neal @rem</td></tr>
-					  <tr><td>animate.css</td><td>3.7.2</td><td>Daniel Eden</td></tr>
+					  <tr><td>animate.css</td><td>4.0.0</td><td>Daniel Eden</td></tr>
 					  <tr><td>bootstrap-rtl.css</td><td>3.3.4</td><td>Morteza Ansarinia</td></tr>
 					</table>
 					</div>
