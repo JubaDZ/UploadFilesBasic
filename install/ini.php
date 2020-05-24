@@ -17,7 +17,7 @@ define('maxsize','20M');
 define('extensions','gif,jpg,jpeg,png,zip,rar,pdf,doc,docx,flv,3gp,wmv,mp4,mp3');
 define('rowsperpage','10');
 define('style','styles.css');	
-define('scriptversion','0.9.7');	
+define('scriptversion','0.9.8');	
 define('authorized','0');	
 define('terms','');	
 define('privacy','');

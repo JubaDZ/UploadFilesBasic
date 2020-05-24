@@ -199,6 +199,7 @@ Sql_query("CREATE TABLE IF NOT EXISTS `users` (
   `plan_id` int(1) NOT NULL DEFAULT '0',
   `end_plan` int(11) NOT NULL,
   `last_ip` int(11) UNSIGNED NOT NULL,
+  `showfiles` int(1) NOT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8  AUTO_INCREMENT=1 ;");
 
@@ -256,11 +257,12 @@ if(num_rows(Sql_query("SHOW COLUMNS FROM `users` LIKE 'plan_id';"))==0)
 if(num_rows(Sql_query("SHOW COLUMNS FROM `users` LIKE 'last_ip';"))==0) 
 	Sql_query("ALTER TABLE `users` ADD `last_ip` INT NOT NULL ;");
 
+
 if(num_rows(Sql_query("SHOW COLUMNS FROM `users` LIKE 'end_plan';"))==0) 
 	Sql_query("ALTER TABLE `users` ADD `end_plan` INT NOT NULL ;");
 
 if(num_rows(Sql_query("SHOW COLUMNS FROM `users` LIKE 'showfiles';"))==0) 
-	Sql_query("ALTER TABLE `users` ADD `showfiles` INT NOT NULL ;");
+	Sql_query("ALTER TABLE `users` ADD `showfiles` INT(1) NOT NULL ;");
 
 Sql_query("UPDATE `files` SET `last_access` = '$date'");
 
@@ -373,7 +375,7 @@ Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('api_requests', '0')
 
 if(num_rows(Sql_query("SELECT * FROM `users` WHERE `username`='$username' OR `email`='$sitemail'"))==0) 
 {
-Sql_query("INSERT INTO `users` (`username`, `password`, `email`, `level`, `last_visit`,`last_ip` ,`register_date`) VALUES ( '$username', '$password', '$sitemail', '1', '$date','$ip','$date');");	
+Sql_query("INSERT INTO `users` (`username`, `password`, `email`, `level`, `last_visit`,`last_ip` ,`register_date`,`showfiles`) VALUES ( '$username', '$password', '$sitemail', '1', '$date','$ip','$date','$showUserfiles');");	
 //(isset($_SESSION['login'])) ? unset( $_SESSION['login'] ) : '';
 if(isset($_SESSION['login'])) unset( $_SESSION['login'] ) ;
 
@@ -513,7 +515,7 @@ define('dbname','$host_base');
 
 define('StatsPanel',true); //false-true
 define('TotalStats',false); // home page  Require ApiStatus 
-define('OutputImage',false); //forceView
+define('OutputImage',true); //forceView
 define('EnableLogo',false);
 define('UpdateBrowser',true); // ie8=< message
 define('DirectoryChanged',false);
