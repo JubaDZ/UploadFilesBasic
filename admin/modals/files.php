@@ -20,7 +20,7 @@
                     </ul>
                 </div>
                 <input type="hidden" name="search_param" value="filename" id="search_param">         
-                <input type="text" class="form-control" name="q" placeholder="<?php echo $lang[59] ?> ...">
+                <input type="text" class="form-control" name="q" id="InputQry" onkeypress="return runQry(event)" placeholder="<?php echo $lang[59] ?> ...">
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="button" onclick="request('search','SearchResults','search_form');"><span class="glyphicon glyphicon-search"></span></button>
                 </span>

@@ -67,6 +67,15 @@
 	  else
 		  summernoteLang = 'en-US';
 	
+	
+	function runQry(e) {
+    //See notes about 'which' and 'key'
+    if (e.keyCode == 13) {
+		request('search','SearchResults','search_form');
+        return false;
+    }
+}
+	
 	   function loadTSize(){$("#t_size").html(t_size_str);}
 	  
 	  function LoadTable(num){
@@ -149,6 +158,8 @@
 				 var myVar = setInterval("loadTSize()", 3000);
 				/* if(isInt($("#t_size").html()))
 					 clearInterval(myVar);*/
+				 
+				
 			 }
 			 
 		}
