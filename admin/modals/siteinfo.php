@@ -31,7 +31,7 @@
 	  
 	  <tr>
         <td>memory_limit</td>
-		<td><code><?php echo function_exists('ini_get') ? (@ini_get('memory_limit')) : '' ?></code></td>
+		<td><code><?php echo function_exists('ini_get') ? FileSizeConvert(return_bytes(@ini_get('memory_limit'))) : '' ?></code></td>
       </tr>
 	  
 	   <tr>
