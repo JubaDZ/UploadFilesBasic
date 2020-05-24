@@ -250,6 +250,7 @@ $EnableCaptcha      = isPost('EnableCaptcha') ?  1 : 0 ;
 $animated           = isPost('animated') ?  1 : 0 ;
 $enable_orgFilename = isPost('enable_orgFilename') ?  1 : 0 ;
 
+$PlayMedia          = isPost('PlayMedia') ?  1 : 0 ;
 $ApiStatus          = isPost('ApiStatus') ?  1 : 0 ;
 $access_contact     = isPost('access_contact') ?  1 : 0 ;
 $access_plans       = isPost('access_plans') ?  1 : 0 ;
@@ -324,6 +325,7 @@ Sql_query("UPDATE `settings` SET `value` = '$EnableCaptcha' WHERE `name` = 'Enab
 Sql_query("UPDATE `settings` SET `value` = '$animated' WHERE `name` = 'animated';");
 Sql_query("UPDATE `settings` SET `value` = '$enable_orgFilename' WHERE `name` = 'enable_orgFilename';");
 
+Sql_query("UPDATE `settings` SET `value` = '$PlayMedia' WHERE `name` = 'PlayMedia';"); 
 Sql_query("UPDATE `settings` SET `value` = '$ApiStatus' WHERE `name` = 'ApiStatus';"); 
 Sql_query("UPDATE `settings` SET `value` = '$access_contact' WHERE `name` = 'access_contact';"); 
 Sql_query("UPDATE `settings` SET `value` = '$access_plans' WHERE `name` = 'access_plans';"); 
@@ -1095,8 +1097,8 @@ if(num_rows($sql)>0) {
     $ext       = strtolower(pathinfo($row["filename"], PATHINFO_EXTENSION));
 	$data['_filename']   = (!is_file('../..'.$folder.'/'.$row["filename"]) ) ? icon($row["filename"]).' '.$lang[46] : icon($row["filename"]).' '.$row["originalFilename"];
 	$data['_thumbnail']  = ($thumbnail =='' ) ? '' : $folder .'/_thumbnail/'. get_thumbnail($row['filename']) ;
-    $data['_media']      = (in_array($ext, array("mp3", "ogg", "wav" , "mp4" , "webm" , "ogv" ))) ? true : false ;
-	$data['_audio']      = (in_array($ext, array("mp3", "ogg", "wav"  ))) ? true : false ;
+    $data['_media']      = (in_array($ext, array("mp3", "ogg", "oga" , "wav" , "mp4" , "webm" , "ogv" ))) ? true : false ;
+	$data['_audio']      = (in_array($ext, array("mp3", "ogg", "oga" , "wav"  ))) ? true : false ;
 	$data['_video']      = (in_array($ext, array("mp4" , "webm" , "ogv" ))) ? true : false ;
         $data['_file']       = $row["filename"];
 		$data['_orgfile']    = $row["originalFilename"];

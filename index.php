@@ -37,7 +37,11 @@ require_once ('./includes/loader.php');
 	<link href="./assets/css/famfamfam-flags.min.css" rel="stylesheet" type="text/css">
 	<link href="./assets/css/platforms.min.css" rel="stylesheet" type="text/css">
 	<link href="./assets/css/bootstrap-checkbox.min.css" rel="stylesheet" type="text/css">
-	<?php } ?>
+	
+	<?php if(directdownload && PlayMedia){ ?>
+	<link rel="stylesheet" type="text/css" href="./assets/css/mediaelementplayer.min.css">
+	<link rel="stylesheet" type="text/css" href="./assets/css/mediaelementplayer-legacy.css">
+	<?php }} ?>
 	<?php if(GetIsEmpty){ ?>    
 	<link href="./assets/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css">
 	<?php } ?>
@@ -182,8 +186,10 @@ else
 	<?php if(isGet('download') || isGet('files') || isGet('profile')){ ?>
 	<script src="./assets/js/jquery.bootpag.min.js" type="text/javascript"></script>
 	<script src="./assets/js/bootstrap-checkbox.min.js" type="text/javascript"></script>
+	<?php if(directdownload && PlayMedia){ ?>
+	<script src="./assets/js/mediaelement-and-player.min.js" type="text/javascript"></script>
 
-   <?php if(!IsIeBrowser()){ ?>
+	<?php }if(!IsIeBrowser()){ ?>
    <script src="./assets/js/chart.min.js" type="text/javascript"></script> 
    <?php } ?>
 	

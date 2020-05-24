@@ -37,6 +37,7 @@ define('animated','1');
 define('enable_orgFilename','1');
 define('banned_countries','Israel');
 define('banned_ips','');
+define('PlayMedia','0');
 define('ApiStatus','1');
 define('access_contact','1');
 define('access_plans','1');

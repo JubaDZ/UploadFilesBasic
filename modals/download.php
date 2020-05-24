@@ -76,9 +76,43 @@ else
 	 '<tr>
         <th>'.$lang[36] .'</th>
         <td id="orgfilenameTD">'.icon($info["filename"]).' '.$info["orgfilename"].' / ( '.isPublic($info['public']).' ) </td>
-      </tr>
+      </tr>';
 	  
-	  <tr>
+	  if( directdownload && PlayMedia){ 
+	    
+	    $strSRC        =  siteurl.$info["fullpath"];
+		$ext           =  strtolower(pathinfo($info["filename"], PATHINFO_EXTENSION));
+	    $_media        = (in_array($ext, array("mp3", "ogg", "oga" , "wav" , "mp4" , "webm" , "ogv" ))) ? true : false ;
+	    $_audio        = (in_array($ext, array("mp3", "ogg", "oga" , "wav"  ))) ? true : false ;
+	    $_video        = (in_array($ext, array("mp4" , "webm" , "ogv" ))) ? true : false ;
+		$_onlineViewer = (in_array($ext, array('doc', 'docx', 'xls', 'xlsx', 'pdf', 'ppt', 'pptx', 'ai', 'psd', 'dxf', 'xps', 'rar', 'odt', 'ods'))) ? true : false ;	
+		if ($_media /*|| $_onlineViewer*/)
+		{
+		echo '
+	  <tr id="media">
+        <th>'. $lang[209].'</th>
+        <td>
+		  <div id="DivPlayer"><div id="MediaSource">'.$strSRC.'</div>';
+		  
+		if($_audio)
+				echo '<audio id="player" src=""  style="width: 100%!important;"></audio>';	
+				
+		if($_video)
+				echo '<video id="player" src=""  style="width: 100%!important; height: 100%!important;"></video>';/*<video style="width: 100%;" id="player" controls><source src="'+strSRC+'"></source></video>');	*/
+				
+		/*if($_onlineViewer)	
+		        echo '<iframe src="https://docs.google.com/viewer?embedded=true&hl=en&url=' . $strSRC . '" frameborder="no" style="width:100%;min-height:460px"></iframe>';	
+	 	 */
+		  
+		 echo 
+		  '</div>
+		</td>
+      </tr>';
+	  } 
+	  }
+	  
+	  echo
+	  '<tr>
         <th>'.$lang[33] .'</th>
         <td id="dateTD">'.time_elapsed_string(date('Y-m-d H:i:s',$info["date"])).'</td>
       </tr>	 

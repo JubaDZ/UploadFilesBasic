@@ -6,7 +6,7 @@ define('dbname','db_uploads');
 
 define('StatsPanel',true); //false-true
 define('TotalStats',false); // home page  Require ApiStatus 
-define('OutputImage',true); //forceView
+define('OutputImage',false); //forceView
 define('EnableLogo',false);
 define('UpdateBrowser',true); // ie8=< message
 define('DirectoryChanged',false);

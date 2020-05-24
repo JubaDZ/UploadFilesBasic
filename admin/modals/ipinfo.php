@@ -19,16 +19,16 @@
         <th><?php echo $lang[83]?></th>
         <td id="ip_ip">--</td>
       </tr> 
-	
+	  
+	  <tr>
+        <th><?php echo $lang[160]?></th>
+        <td><code id="ip_country">--</code></td>
+      </tr>
+	  
 	  <tr>
         <th><?php echo $lang[208]?></th>
         <td id="ip_city" ><mark>--</mark></td>
       </tr> 
-	  
-	  <tr>
-        <th><?php echo $lang[160]?></th>
-        <td id="ip_country">--</td>
-      </tr>
 	  
 	  <tr>
         <th><?php echo 'ISP'?></th>

@@ -139,6 +139,7 @@ print '<pre style="text-align: left;direction: ltr; ">' . print_r(get_defined_va
   <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-toggle.min.css">  
   <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-checkbox.min.css">
   <link rel="stylesheet" type="text/css" href="../assets/css/mediaelementplayer.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets/css/mediaelementplayer-legacy.css">
   <?php if(isGet('statistics')){ ?>
   <link href="../assets/css/famfamfam-flags.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/css/platforms.min.css" rel="stylesheet" type="text/css">

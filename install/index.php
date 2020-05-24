@@ -75,6 +75,7 @@ $EnableComments = isPost('EnableComments') ?  1 : 0 ;
 $EnableCaptcha  = isPost('EnableCaptcha') ?  1 : 0 ;
 $animated       = isPost('animated') ?  1 : 0 ;
 
+$PlayMedia          = isPost('PlayMedia') ?  1 : 0 ;
 $ApiStatus          = isPost('ApiStatus') ?  1 : 0 ;
 $access_contact     = isPost('access_contact') ?  1 : 0 ;
 $access_plans       = isPost('access_plans') ?  1 : 0 ;
@@ -343,6 +344,7 @@ Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('WellColor', '$WellC
 Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('FontColor', '$FontColor');");
 
 
+Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('PlayMedia', '$PlayMedia');");
 Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('ApiStatus', '$ApiStatus');");
 Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('access_contact', '$access_contact');");
 Sql_query("INSERT INTO `settings` (`name`, `value`) VALUES ('access_plans', '$access_plans');");
@@ -1000,11 +1002,18 @@ $.ajax({
         <input type="text"  class="form-control" placeholder="<?php echo $lang[258].$lang[254] ?>" disabled>
     </div>
 	
+	<div class="input-group">
+      <span class="input-group-addon"><input name="PlayMedia" type="checkbox" <?php if(PlayMedia) echo ' checked' ?>> <?php echo $lang[209] ?></span>
+        <input type="text"  class="form-control" placeholder="<?php echo $lang[258].$lang[209] ?>" disabled>
+    </div>
 	
 	<div class="input-group">
       <span class="input-group-addon"><input name="ApiStatus" type="checkbox" <?php if(ApiStatus) echo ' checked' ?>> <?php echo $lang[281] ?></span>
         <input type="text"  class="form-control" placeholder="<?php echo $lang[258].$lang[281] ?>" disabled>
     </div>
+	
+	
+	
 	
 	<div class="input-group">
       <span class="input-group-addon"><input name="access_contact" type="checkbox" <?php if(access_contact) echo ' checked' ?>> <?php echo $lang[282] ?></span>

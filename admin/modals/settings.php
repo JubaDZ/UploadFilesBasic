@@ -210,6 +210,11 @@
 		<span class="input-group-addon" style="min-width: 15px;text-align: left;"><input name="statistics" class="settings" type="checkbox" <?php if(statistics) echo ' checked' ?>></span>
     </div>
 	
+	<div class="input-group">
+      <span class="input-group-addon"> <?php echo $lang[209] ?></span>
+        <input type="text"  class="form-control hidden-sml" placeholder="<?php echo $lang[258].$lang[209]  ?>" disabled>
+		<span class="input-group-addon" style="min-width: 15px;text-align: left;"><input name="PlayMedia" class="settings" type="checkbox" <?php if(PlayMedia) echo ' checked' ?>></span>
+    </div>
 	
 	<div class="input-group">
       <span class="input-group-addon"> <?php echo $lang[281] ?></span>

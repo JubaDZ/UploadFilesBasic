@@ -5,6 +5,7 @@
 	   var
 	   IsLogin     = Boolean('<?php echo (bool)IsLogin ?>'),
 	   IsDirect    = Boolean('<?php echo (bool)directdownload ?>'),
+	   IsPlayMedia = Boolean('<?php echo (bool)PlayMedia ?>'),
        IsClose     = Boolean('<?php echo (bool)siteclose ?>'),
 	   IsIeBrowser = Boolean('<?php echo (bool)IsIeBrowser() ?>'),
 	   totalpages  = parseInt('<?php echo $totalpages ?>') ,
@@ -220,6 +221,7 @@ function Search(table) {
 	  $('#select_all').prop('checked',false);
 			   $.get("ajax/index.php?"+table+"&currentpage=1&Search=" +Search_txt, function(data, status){
 				   if(status=='success'){
+				    
 					   loadTableHtml(data);
 					   $('.checkbox').checkbox();
 					    $('#span_select_all').show();
@@ -488,13 +490,13 @@ if (typeof(FilesTotal)==='undefined') FilesTotal = 1;
 			
 			if(data._audio)
 			{
-				$("#DivPlayer").html('<audio id="player" src="'+strSRC+'" style="width: 100%!important;"></audio>');	
+				$("#DivPlayer").html('<audio id="player" src="'+strSRC+'"  style="width: 100%!important;"></audio>');	
 				/*<audio style="width: 100%;" id="player" controls><source src="'+strSRC+'"></source></audio>*/
 			}
 			
 			if(data._video)
 			{
-				$("#DivPlayer").html('<video id="player" src="'+strSRC+'" style="width: 100%!important; height: 100%!important;"></video>');
+				$("#DivPlayer").html('<video id="player" src="'+strSRC+'"  style="width: 100%!important; height: 100%!important;"></video>');
 				/*<video style="width: 100%;" id="player" controls><source src="'+strSRC+'"></source></video>');	*/
 			}
 			//$('#player').load();
@@ -664,6 +666,12 @@ function Download_Attachment(ResultsID,formID) {
 	setInterval('$("#result-selection").hide()',3000); 
 }
 
+
+
+					   
+
+
+
 function request(parameter,ResultsID,formID) {
 	if(formID=='publicity_form')
 		if ( $("#"+formID).serialize().indexOf('ads_google') > -1)
@@ -687,12 +695,15 @@ function request(parameter,ResultsID,formID) {
 				 if(formID=='search_form')
 				 {
 					 //loadSidenav();
-					 
+					  $('#span_select_all').hide();
+					  $('#select_all').prop('checked',false);
 					  results.html("");
 					 
 					 // $('#SearchModal').modal('hide');
-					  $('#page-selection').bootpag({page : 1,total: data.success_totalpages ,maxVisible: _maxVisible}); 
+					  $('#page-selection').bootpag({page : 1,total: data.totalpages ,maxVisible: _maxVisible}); 
 			          $("#tbody").html(data.success_msg);
+					  $('.checkbox').checkbox();
+					  $('#span_select_all').show();
 					 // setInterval(redirect('?files'),1000); 
 					  $("#Titleheader").html('<?php echo $lang[48] ?> / <a style="font-size: 14px;" href="?clearfilter"><?php echo $lang[81] ?></a>');
 					  

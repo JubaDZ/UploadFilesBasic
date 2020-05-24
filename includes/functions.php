@@ -709,7 +709,11 @@ function icon($filename)
 	return "<i class='".iconClass($filename)."'></i>";			
 }
 
-
+       
+    
+   
+		 
+		
 function iconClass($filename)
 {
 	$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
@@ -717,11 +721,11 @@ function iconClass($filename)
         return "icon-file-image";
 	elseif($ext =='rar' || $ext =='zip' || $ext =='7z' || $ext =='iso' || $ext =='tar' || $ext =='apk' || $ext =='dmg' || $ext =='jar' || $ext =='sfx' || $ext =='zipx')
 	    return "icon-file-archive";
-	elseif($ext =='mkv' || $ext =='3gp' || $ext =='flv' || $ext =='mp4' || $ext =='avi' || $ext =='wmv' || $ext =='mpg' || $ext =='mpeg' || $ext =='webm'  )
+	elseif($ext =='mkv' || $ext =='3gp' || $ext =='flv' || $ext =='mp4' || $ext =='avi' || $ext =='wmv' || $ext =='mpg' || $ext =='mpeg' || $ext =='webm' || $ext =='m4v' || $ext =='f4v' || $ext =='ogm'|| $ext =='ogv' || $ext =='mov' ||$ext =='asf' )
 	    return "icon-file-video";
 	elseif($ext =='doc' || $ext =='docm' || $ext =='docx')
 	    return "icon-file-word";
-	elseif($ext =='xlsm' || $ext =='xlsx' || $ext =='xlsx' || $ext =='xlt')
+	elseif($ext =='xlsm' || $ext =='xlsx' || $ext =='xlsx' || $ext =='xlt' || $ext =='ods')
 	    return "icon-file-excel";
 	elseif($ext =='pdf')
 	    return "icon-file-pdf";
