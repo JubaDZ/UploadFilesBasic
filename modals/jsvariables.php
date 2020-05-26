@@ -3,10 +3,12 @@ require_once ('../includes/config.php');
 require_once ('../includes/session.php');	
 require_once ('../includes/functions.php');
 require_once ('../includes/connect.php');
+
 require_once ('../includes/languages/'.LANG_FILE);
 (!defined('Extensions_Html')) ? define('Extensions_Html' , ExtensionsHtml() ) : '' ;
 (!defined('footerTxt'))       ? define('footerTxt',FooterInfo()) : '' ;
 (!defined('StatsPanel'))      ? define('StatsPanel',StatsPanel('.'.folderupload)) : '' ;
+(!defined('FileBlacklist'))   ? define('FileBlacklist',implode(FileBlacklist(),"','")) : '' ;
 $Public_user_id = (isGet('user')) ? (int)$_GET['user'] : UserID ;
 header("Content-type: text/javascript; charset: UTF-8");
 echo "
@@ -39,7 +41,7 @@ var IsLogin     = Boolean('".(bool)IsLogin."'),
 	IsGetForgot    = Boolean('".(bool)(isGet('forgot'))."'),
 	IsGetContact   = Boolean('".(bool)(isGet('contact'))."'),
 	Extensions_Html = '".(defined('Extensions_Html') ? Extensions_Html : '')."',
-
+    Extensions_not_allowed = [ "."'".FileBlacklist."'"."],
 	
 	filetypes   = [ "."'".implode(explode(",",extensions),"','")."'"."],
 	configSize  = parseInt('".(MaxFileSize /1024)."'),
