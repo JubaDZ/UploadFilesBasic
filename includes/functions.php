@@ -712,12 +712,31 @@ function icon($filename)
        
     
    
-		 
-		
+function FileBlacklist($executables=false)
+{
+return ($executables) ?
+    array (
+	# HTML may contain cookie-stealing JavaScript and web bugs
+	'html', 'htm', 'js', 'jsb', 'mhtml', 'mht', 'xhtml', 'xht',
+	# PHP scripts may execute arbitrary code on the server
+	'php', 'phtml', 'php3', 'php4', 'php5', 'phps', 'phar',
+	# Other types that may be interpreted by some servers
+	'shtml', 'jhtml', 'pl', 'py', 'cgi',
+	# May contain harmful executables for Windows victims
+	 'exe', 'scr', 'dll', 'msi', 'vbs', 'bat', 'com', 'pif', 'cmd', 'vxd', 'cpl'
+	 ): array (
+	# HTML may contain cookie-stealing JavaScript and web bugs
+	'html', 'htm', 'js', 'jsb', 'mhtml', 'mht', 'xhtml', 'xht',
+	# PHP scripts may execute arbitrary code on the server
+	'php', 'phtml', 'php3', 'php4', 'php5', 'phps', 'phar',
+	# Other types that may be interpreted by some servers
+	'shtml', 'jhtml', 'pl', 'py', 'cgi'
+	 );		 
+}		
 function iconClass($filename)
 {
 	$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-	if ($ext =='png' || $ext =='jpg' || $ext =='jpeg' ||$ext =='gif' || $ext =='bmp' || $ext =='ico' || $ext =='psd' || $ext =='svg' ) 
+	if ($ext =='png' || $ext =='jpg' || $ext =='jpeg' ||$ext =='gif' || $ext =='bmp' || $ext =='ico' || $ext =='psd' || $ext =='svg' || $ext =='swf') 
         return "icon-file-image";
 	elseif($ext =='rar' || $ext =='zip' || $ext =='7z' || $ext =='iso' || $ext =='tar' || $ext =='apk' || $ext =='dmg' || $ext =='jar' || $ext =='sfx' || $ext =='zipx')
 	    return "icon-file-archive";

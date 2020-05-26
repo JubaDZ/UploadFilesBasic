@@ -368,7 +368,7 @@ if (isGet('stats'))
 	$chart_extensions_data   = array();
 	
 	 
-	$result = Sql_query("SELECT SUBSTRING_INDEX(`filename`,'.',-1) as `_extensions_` , count(`filename`) as `_count_` FROM `files` GROUP BY `_extensions_` ORDER BY `_extensions_` DESC LIMIT 15");
+	$result = Sql_query("SELECT SUBSTRING_INDEX(`filename`,'.',-1) as `_extensions_` , count(`filename`) as `_count_` FROM `files` GROUP BY `_extensions_` ORDER BY `_count_` DESC ,`_extensions_` DESC LIMIT 15");
 	while ($data = mysqli_fetch_array($result))
 	{
 		$chart_extensions_labels[] = strtoupper($data['_extensions_']);

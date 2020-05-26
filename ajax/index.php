@@ -223,7 +223,7 @@ if(isGet('uploadfile'))
 Copyright 2012-2016 LPology, LLC
 */		
 $Upload          = new FileUpload('uploadfile');
-
+$FileBlacklist   = FileBlacklist();
 $ext             = strtolower($Upload->getExtension()); // Get the extension of the uploaded file
 $_UploadFileName = _Upload_name().$ext;
 $extensions      = explode(",",extensions);
@@ -243,6 +243,10 @@ if (in_array($ext , array('psd','png' , 'jpg' , 'gif', 'bmp' ,'jpeg' , 'ico')))
 	   IePrintArray(array('success' => false, 'msg' => $lang[299].' - '.$orgfilename   ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  	
 }	
 
+if (in_array($ext , $FileBlacklist)) 
+{
+	   IePrintArray(array('success' => false, 'msg' => $lang[298].' - '.$orgfilename   ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  	
+}	
  //  echo get_mime_type_by_header($Upload->Temporaryfile).'<br>';//string
   // print_r(get_mime_type_by_ext($ext)) ; //array 
 
