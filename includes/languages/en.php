@@ -301,4 +301,5 @@ $lang[296] =  'You have to wait';
 $lang[297] =  'till next download';
 $lang[298] =  'File is not safe';
 $lang[299] =  'File is not an image';
+$lang[300] =  'Contents Obscure string';
 ?>

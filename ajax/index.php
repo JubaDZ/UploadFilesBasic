@@ -219,15 +219,20 @@ if(isGet('uploadfile'))
 
 (!file_exists('..'.uploadDir )) ? @mkdir('..'.uploadDir , 0777, true) : '';
 (function_exists('ini_set'))    ? @ini_set('max_execution_time', 0) : '';
-/*
-Copyright 2012-2016 LPology, LLC
-*/		
+
+/*Copyright 2012-2016 LPology, LLC*/		
 $Upload          = new FileUpload('uploadfile');
 $FileBlacklist   = FileBlacklist();
 $ext             = strtolower($Upload->getExtension()); // Get the extension of the uploaded file
-$_UploadFileName = _Upload_name().$ext;
+
+$tmpfile         = protect($Upload->Temporaryfile);
+$mime_by_header  = get_mime_type_by_header($tmpfile); // return string
+$mime_by_ext     = (!empty($mime_by_header)) ? get_mime_type_by_ext($ext) : array(0=>'application/octet-stream'); // return array
+
+$_UploadFileName = Generate_file_name().$ext;
 $extensions      = explode(",",extensions);
 $orgfilename     = protect($Upload->getFileName()); 
+
 $passwordfile    = (isPost('passwordfile')) ? protect($_POST['passwordfile']) : '';
 $code            = (isPost('code')) ? protect($_POST['code']) : '' ;
 $ispublic        = (isPost('ispublic') && (IsLogin||ApiLogin) ) ? (int)$_POST['ispublic'] : 1 ;
@@ -239,30 +244,36 @@ $FolderUploadId  = FolderUploadId;
 
 if (in_array($ext , array('psd','png' , 'jpg' , 'gif', 'bmp' ,'jpeg' , 'ico'))) 
 {
-	if (!is_image($Upload->Temporaryfile))  
-	   IePrintArray(array('success' => false, 'msg' => $lang[299].' - '.$orgfilename   ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  	
+	if (!is_image($tmpfile))  
+	   IePrintArray(array('success' => false, 'msg' => $lang[299].' - '.$orgfilename   ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;
 }	
 
 if (in_array($ext , $FileBlacklist)) 
-{
-	   IePrintArray(array('success' => false, 'msg' => $lang[298].' - '.$orgfilename   ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  	
-}	
- //  echo get_mime_type_by_header($Upload->Temporaryfile).'<br>';//string
-  // print_r(get_mime_type_by_ext($ext)) ; //array 
+	IePrintArray(array('success' => false, 'msg' => $lang[298].' * '.$orgfilename   ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;
 
-if (!is_safe($Upload->Temporaryfile,$ext)) 
-	IePrintArray(array('success' => false, 'msg' => $lang[298].' - '.$orgfilename  ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;  
+if ( in_array( $mime_by_header , MimeBlacklist() ))
+	if (check_is_contents_Obscure_string($tmpfile,$mime_by_header))
+		IePrintArray(array('success' => false, 'msg' => $lang[300].' - '.$orgfilename   ,'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;
+ 
+/*  echo get_mime_type_by_header($tmpfile).'<br>';//string
+   print_r(get_mime_type_by_ext($ext)) ; //array 
+Obscure_string($tmpfile);
+*/
+
+//if (!is_safe($Upload->Temporaryfile,$ext)) 
+if(!check_is_safe($tmpfile,$mime_by_header,$mime_by_ext))
+	IePrintArray(array('success' => false,'msg' => $lang[298].' - '.$orgfilename,  /*'mime_by_header'=> $mime_by_header,'mime_by_ext'=> implode($mime_by_ext,",")*/ 'StatsPanel'=> StatsPanel('..'.folderupload) ),data_format) ;
 
 //if(Sql_file_exists($_UploadFileName))
-	if(file_exists('..'. uploadDir.'/'.$_UploadFileName))
-	{
-		sleep(1); // sleep for 1 second
-		$_UploadFileName = _Upload_name().$ext;
-	}
+if(file_exists('..'. uploadDir.'/'.$_UploadFileName))
+{
+	sleep(1); // sleep for 1 second
+	$_UploadFileName = Generate_file_name().$ext;
+}
 	
 $Upload->Language    = $lang;
 $Upload->sizeLimit   = MaxFileSize;
-$Upload->newFileName = $_UploadFileName ; /*_Upload_name().$ext;*/
+$Upload->newFileName = $_UploadFileName ; /*Generate_file_name().$ext;*/
 
 
 if($Upload->getFileSize()>=MaxFileSize) 
@@ -327,7 +338,8 @@ if (!$result)
 					  'cryptID'=> Encrypt($id ),
 					  'UploadDir'=> uploadDir ,
 					  'ThumbnailDir'=> $ThumbnailDir , 
-					  'IsLogin'=> (IsLogin || ApiLogin) ,  					  
+					  'IsLogin'=> (IsLogin || ApiLogin) ,  
+				 
 					  'StatsPanel'=> StatsPanel('..'.folderupload) ) ,data_format) ;
 				
  }

@@ -27,7 +27,7 @@
         <td class="col-md-2 hidden-sml singleline" id="label_view"> <?php echo $lang[164] ?>:</td>
         <td class="col-md-10"> 
 		  <div class="input-group" style="margin: 0px;">
-                <input type="text" data-toggle="tooltip" data-placement="top" title="<?php echo $lang[164] ?>"class="form-control" id="view" style="text-align: left;direction: ltr;" readonly>
+                <input type="text" data-toggle="tooltip" data-placement="top" title="<?php echo $lang[164] ?>" class="form-control" id="view" style="text-align: left;direction: ltr;" readonly>
 			    <span class="input-group-btn">
 			      <button class="btn btn-primary" onclick="CopyLink('view')" type="button"><?php echo $lang[146] ?></button>
 		        </span>  
@@ -57,7 +57,7 @@
         <td class="col-md-2 hidden-sml singleline" id="label_delete"><?php echo $lang[26] ?>:</td>
         <td class="col-md-10">
 			<div class="input-group" style="margin: 0px;">
-               <input type="text" data-toggle="tooltip" data-placement="top" title="<?php echo $lang[26] ?>"class="form-control" id="delete" style="text-align: left;direction: ltr;" readonly>
+               <input type="text" data-toggle="tooltip" data-placement="top" title="<?php echo $lang[26] ?>" class="form-control" id="delete" style="text-align: left;direction: ltr;" readonly>
 			    <span class="input-group-btn">
 			      <button class="btn btn-primary" onclick="CopyLink('delete')" type="button"><?php echo $lang[146] ?></button>
 		        </span>  
@@ -70,7 +70,7 @@
         <td class="col-md-2 hidden-sml singleline" id="label_downloadlink"><?php echo $lang[184] ?>:</td>
         <td class="col-md-10">
 			<div class="input-group" style="margin: 0px;">
-               <input type="text" data-toggle="tooltip" data-placement="top" title="<?php echo $lang[184] ?>"class="form-control" id="downloadlink" style="text-align: left;direction: ltr;" readonly>
+               <input type="text" data-toggle="tooltip" data-placement="top" title="<?php echo $lang[184] ?>" class="form-control" id="downloadlink" style="text-align: left;direction: ltr;" readonly>
 			    <span class="input-group-btn">
 			      <button class="btn btn-primary" onclick="CopyLink('downloadlink')" type="button"><?php echo $lang[146] ?></button>
 		        </span> 			
@@ -84,7 +84,7 @@
         <td class="col-md-2 hidden-sml singleline" id="label_directlink"><?php echo $lang[51] ?>:</td>
         <td class="col-md-10">
 			<div class="input-group" style="margin: 0px;">
-               <input type="text" data-toggle="tooltip" data-placement="top" title="<?php echo $lang[51] ?>"class="form-control" id="directlink" style="text-align: left;direction: ltr;" readonly> 
+               <input type="text" data-toggle="tooltip" data-placement="top" title="<?php echo $lang[51] ?>" class="form-control" id="directlink" style="text-align: left;direction: ltr;" readonly> 
 			    <span class="input-group-btn">
 			      <button class="btn btn-primary" onclick="CopyLink('directlink')" type="button"><?php echo $lang[146] ?></button>
 		        </span>   

@@ -14,6 +14,34 @@ if( !function_exists('json_decode') ) {
     }
 }
 
+//Replace mime_content_type()
+if (!function_exists('mime_content_type')) {
+    function mime_content_type($filename)
+    {
+        // Sanity check
+        if (!file_exists($filename)) {
+            return false;
+        }
+
+        $filename = escapeshellarg($filename);
+        $out = `file -iL $filename 2>/dev/null`;
+        if (empty($out)) {
+            return 'application/octet-stream';
+        }
+
+        // Strip off filename
+        $t = substr($out, strpos($out, ':') + 2);
+
+        if (strpos($t, ';') !== false) {
+            // Strip MIME parameters
+            $t = substr($t, 0, strpos($t, ';'));
+        }
+
+        // Strip any remaining whitespace
+        return trim($t);
+    }
+}
+
 function extract_json_from_string($text)
 { 
 return preg_replace('~\{(?:[^{}]|(?R))*\}~', '', $text);
@@ -286,7 +314,7 @@ function isValidEmail($str) {
 	return filter_var($str, FILTER_VALIDATE_EMAIL);
 }
 
-function _Upload_name() {
+function  Generate_file_name() {
 	return prefixname.date("Y-m-d_His.");
 	/*return sha1(date("Y-m-d_His.")); return md5(date("Y-m-d_His.")); return uniqid(prefixname);*/
 }
@@ -709,8 +737,37 @@ function icon($filename)
 	return "<i class='".iconClass($filename)."'></i>";			
 }
 
-       
-    
+function  MimeBlacklist()
+{
+    return array( "text/html",
+		          		"text/plain",
+        		  		"magnus-internal/shellcgi",
+		          		"application/x-php",
+        		  		"text/php",
+          		  		"application/x-httpd-php" ,
+         		  		"application/php",
+          		  		"magnus-internal/shellcgi",
+         		  		"text/x-perl",
+          		  		"application/x-perl",
+          		  		"application/x-exe",
+          		  		"application/exe",
+          		  		"application/x-java" ,
+          		  		"application/java-byte-code",
+          		  		"application/x-java-class",
+          		  		"application/x-java-vm",
+          		  		"application/x-java-bean",
+          		  		"application/x-jinit-bean",
+          		  		"application/x-jinit-applet",
+          		  		"magnus-internal/shellcgi",
+          		  		"image/svg",
+          		 	 	"image/svg-xml",
+          		  		"image/svg+xml",
+          		  		"text/xml-svg",
+          		  		"image/vnd.adobe.svg+xml",
+    		      		"image/svg-xml",
+        		  		"text/xml",
+       				)  ;   
+}					
    
 function FileBlacklist($executables=false)
 {
@@ -725,11 +782,8 @@ return ($executables) ?
 	# May contain harmful executables for Windows victims
 	 'exe', 'scr', 'dll', 'msi', 'vbs', 'bat', 'com', 'pif', 'cmd', 'vxd', 'cpl'
 	 ): array (
-	# HTML may contain cookie-stealing JavaScript and web bugs
 	'html', 'htm', 'js', 'jsb', 'mhtml', 'mht', 'xhtml', 'xht',
-	# PHP scripts may execute arbitrary code on the server
 	'php', 'phtml', 'php3', 'php4', 'php5', 'phps', 'phar',
-	# Other types that may be interpreted by some servers
 	'shtml', 'jhtml', 'pl', 'py', 'cgi'
 	 );		 
 }		
@@ -2265,21 +2319,26 @@ function get_mime_type_by_ext($ext) // array
 
 function get_mime_type_by_header($filename)
 { 
-   $result='';
-   
-  if (function_exists('mime_content_type'))
+  // Sanity check
+    if (!file_exists($filename)) {
+        return '';
+     } 
+	
+    if (function_exists('mime_content_type'))
      {
-        $result = @mime_content_type($filename);
+        return @mime_content_type($filename);
      }
      elseif (function_exists('finfo_open')) 
      {
+		$result='';
         $finfo  = finfo_open(FILEINFO_MIME_TYPE);
 		if ($finfo)
            $result = finfo_file($finfo, $filename);
         finfo_close($finfo);
+		return $result;
      }
 	 
-	 return $result;
+	 
 }
 
 function get_mime_type($filename)
@@ -2299,37 +2358,83 @@ function get_mime_type($filename)
 	}
 }
 
-function is_safe($tmpfile,$ext)
+function Obscure_string($filename)
 {
-		
-   $mime_by_header = get_mime_type_by_header($tmpfile);//string
-   $mime_by_ext    = get_mime_type_by_ext($ext) ; //array 
-    if (! empty($mime_by_header))
-        return ( in_array($mime_by_header,$mime_by_ext ) ) ? true : false;
-    
-		
-  
-    if (@filesize($tmpfile) > 5*(1048576)) //|| (@filesize($tmpfile) = 0)) 5MB
-        return true;
-    
-    $_Obscure_string = array('<script','eval' ,'zend','wscript','createobject','Powershell','[AppDomain]','Security.Cryptography','Net.WebClient','Reflection.Assembly' ,'Byte[]','EntryPoint','Invoke','EntryPoint.Invoke','Frombase64String','base64_decode', '<?php', '<?=');
+	// Sanity check
+    if (!file_exists($filename)) 
+        return false; 
 	
-
-    if (! ($contents = @file_get_contents($tmpfile)))
-        return true;
+	if (@filesize($filename) > 5*(1048576)) //|| (@filesize($filename) = 0)) 5MB
+        return false;
     
-
+    if (! ($contents = @file_get_contents($filename)))
+        return false;
+    $contents = strtolower($contents) ;
+	$_Obscure_string = array('<script','eval' ,'zend','wscript','createobject','Powershell','[AppDomain]','Security.Cryptography','Net.WebClient','Reflection.Assembly' ,'Byte[]','EntryPoint','Invoke','EntryPoint.Invoke','Frombase64String','base64_decode', '<?php', '<?=');
+	//print_r($_Obscure_string);
 
     foreach ($_Obscure_string as $word)
     {
-        if (strpos(strtolower($contents), $word) !== false) 
+        if (strpos($contents, strtolower($word)) !== false) 
 		{
 		    unset($contents);
-            return false;
+            return true;
+			break;
 		}
         
     }
     unset($contents);
+	return false;
+}
+
+function is_safe($tmpfile,$ext)
+{
+		
+   $mime_by_header = get_mime_type_by_header($tmpfile);//string
+   
+    if (! empty($mime_by_header))
+		 if (in_array ($mime_by_header , MimeBlacklist()))		
+              return Obscure_string($tmpfile);
+		  
+	 
+    if (! empty($mime_by_header))
+	{
+		$mime_by_ext    = get_mime_type_by_ext($ext) ; //array 	 
+        return ( in_array($mime_by_header,$mime_by_ext ) ) ? true : false;
+	}
+    
+	//is empty => $mime_by_header
+	
+	return Obscure_string($tmpfile);
+	
+    return true;
+}
+
+//*********************************************************************
+function check_is_contents_Obscure_string($tmpfile,$mime_by_header)
+{
+	if (!empty($mime_by_header))
+	{
+		if (in_array ($mime_by_header , MimeBlacklist()  ))
+            return Obscure_string($tmpfile)  ? true : false;
+			 
+		return false;
+	}
+	
+		return false;		  
+	
+}
+//*******************************************************************
+function check_is_safe($tmpfile,$mime_by_header,$mime_by_ext)
+{	
+ 
+    if (! empty($mime_by_header))
+        return ( in_array($mime_by_header,$mime_by_ext ) ) ? true : false;
+    
+	//is empty => $mime_by_header
+	
+	return Obscure_string($tmpfile) ? false : true;
+	
     return true;
 }
 //*********************************************************************
