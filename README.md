@@ -1,5 +1,5 @@
-# Script Upload Files Basic v 0.9.7
-Last update 05/06/2019
+# Script Upload Files Basic v 0.9.8
+Last update 08/06/2020
 
 ### Google Ads ###
 

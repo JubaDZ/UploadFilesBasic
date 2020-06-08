@@ -489,10 +489,12 @@ WriteHtaccessUploadFolder('..'.$folderupload,!$directdownload);
 /*
 unlink('../install/ini.php');
 unlink('../install/index.php' );*/	
-@unlinkRecursive('../install',true);
 
 for($i=0; $i<count($uselessFiles); $i++) 
-	unlink('../'.$uselessFiles[$i]);
+	if (file_exists('../'.$uselessFiles[$i]))
+		unlink('../'.$uselessFiles[$i]);
+
+@unlinkRecursive('../install',true);
 
 PrintArray(array('settings'=>'general','success_msg' => $lang[104] , 'admincp' => siteurl.'/admin' , 'username' => $username ));
 }
@@ -521,6 +523,7 @@ define('OutputImage',true); //forceView
 define('EnableLogo',false);
 define('UpdateBrowser',true); // ie8=< message
 define('DirectoryChanged',false);
+define('Direct4ImageOnly',true); //Direct link for image only
 
 /*define('MainTitle','اكتب هنا اسم موقعك');*/\r\n"
 .'$supportedLangs  '."= array('ar','en','') ;\r\n"	

@@ -80,7 +80,7 @@
 	  
 	  
 	    <?php if(directdownload){ ?>
-	   <tr>
+	   <tr id="direct_tr">
         <td class="col-md-2 hidden-sml singleline" id="label_directlink"><?php echo $lang[51] ?>:</td>
         <td class="col-md-10">
 			<div class="input-group" style="margin: 0px;">
